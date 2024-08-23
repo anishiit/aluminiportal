@@ -44,11 +44,11 @@ function Page() {
             throw new Error(data.error || "Signup failed");
           }
       
-          if (typeof window !== 'undefined') {
-            window.localStorage.setItem("user-threads", JSON.stringify(data.user));
-            // setUser(data.user);
+  
+
+        
             router.push('../login')
-          }
+    
           
           
         } catch (error) {
