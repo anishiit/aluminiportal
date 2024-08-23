@@ -9,12 +9,16 @@ import { branch } from '@/data/branch';
 // import { useSetRecoilState } from 'recoil';
 
 import { useRouter } from 'next/navigation'
+import axios from 'axios';
 
 
   
 function Page() {
   const router = useRouter();  
     // const setUser = useSetRecoilState(userAtom);
+    const [error,setError] = useState("")
+    
+    // const userId = 
     
     const [inputs, setInputs] = useState({
         name: "",
@@ -27,20 +31,36 @@ function Page() {
         contactNumber:"",
         companyName:"",
         jobTitle:"",
+        userId:""
       });
+      function fetchUser(){
+        let user;
+        if(typeof window !== undefined){
+          user = JSON.parse(localStorage.getItem("user-threads"))
+        }
+        console.log(user);
+        if(!user) return;
+
+        console.log(user);
+        // setInputs(user);
+        setInputs({
+          name:user.name,
+          email:user.email,
+          collegeName:user.collegeName,
+          branch:user.branch,
+          state:user.state,
+          batch:user.batch,
+          location:user.location,
+          contactNumber:user.contactNumber,
+          companyName:user.companyName,
+          jobTitle:user.jobTitle,
+          userId:user._id
+        })
+      
+      }
         // Load data from local storage on component mount
   useEffect(() => {
-    let savedData;
-    if(typeof window !== undefined)
-     savedData = localStorage.getItem("user-thread");
-
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setInputs((prevInputs) => ({
-        ...prevInputs,
-        ...parsedData,
-      }));
-    }
+   fetchUser();
   }, []);
 
 
@@ -52,55 +72,43 @@ function Page() {
     }));
   };
 
-      const handleSignup = async () => {
-        console.log(inputs);
-      setError("");
-        // Check if any field is empty
-        if (!inputs.name || !inputs.email || !inputs.password || !inputs.collegeName) {
-          
-          return; // Exit the function if any field is empty
+      async function getUser(){
+        try {
+          await axios.post("https://alumini-portal-backend.onrender.com/user/getuser",{userId:inputs.userId})
+          .then((res) => {
+            console.log(res.data);
+            if(typeof window !== undefined){
+              localStorage.setItem("user-threads",JSON.stringify(res.data.user))
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        } catch (error) {
+          console.log(error)
         }
+      }
+      const handleSignup = async (e) => {
+        console.log("updating profile...")
+        e.preventDefault();
+        console.log(inputs);
+         setError("");
       
         try {
-          const res = await fetch("https://alumini-portal-backend.onrender.com/user/updateprofile", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-          });
-      
-          const data = await res.json();
-          console.log(data.user);
-          if (!res.ok || data.error) {
-            throw new Error(data.error || "Signup failed");
-          }
-      
-          if (typeof window !== 'undefined') {
-            window.localStorage.setItem("user-threads", JSON.stringify(data.user));
-            // setUser(data.user);
-            router.push('../login')
-          }
-          
+          await axios.post("https://alumini-portal-backend.onrender.com/user/updateprofile",inputs)
+          .then((res) => {
+            console.log(res.data);
+            getUser();
+          })
+          .catch((err) => {
+            console.log(err)
+          })    
           
         } catch (error) {
           console.error(error);
         }
       };
       
-      
-    // const [colleges, setColleges] = useState([]);
-
-    // useEffect(() => {
-    //   // Fetch the colleges from the JSON file
-    //   const fetchColleges = async () => {
-    //     const res = await fetch('/src/data/college.json');
-    //     const data = await res.json();
-    //     setColleges(data);
-    //   };
-  
-    //   fetchColleges();
-    // }, []);
   
    
   
@@ -128,7 +136,7 @@ function Page() {
               Go to Profile
             </a>
           </p>
-          <form action="#" method="POST" className="mt-8">
+          <form onSubmit={handleSignup} method="POST" className="mt-8">
             <div className="space-y-5">
             <div>
                 <label htmlFor="" className="text-base font-medium text-gray-900">
@@ -153,7 +161,7 @@ function Page() {
                 <div className="mt-2">
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                    type="email"
+                    type="text"
                     placeholder="Email"
                     onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
                     value={inputs.email}
@@ -266,21 +274,6 @@ function Page() {
               <div>
                 <label htmlFor="" className="text-base font-medium text-gray-900">
                   {' '}
-                  Location{' '}
-                </label>
-                <div className="mt-2">
-                  <input
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                    type="text"
-                    placeholder="name"
-                    onChange={(e) => setInputs({ ...inputs, location: e.target.value })}
-										value={inputs.location}
-                  ></input>
-                </div>
-              </div>
-              <div>
-                <label htmlFor="" className="text-base font-medium text-gray-900">
-                  {' '}
                   Company Name{' '}
                 </label>
                 <div className="mt-2">
@@ -311,7 +304,7 @@ function Page() {
               <div>
               
                 <button
-                  type="button"
+                  type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   onClick={handleSignup}>
                   Get started <ArrowRight className="ml-2" size={16} />
