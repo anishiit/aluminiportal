@@ -1,7 +1,7 @@
 'use client'
 import React,{useState, useEffect} from 'react'
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter,usePathname } from 'next/navigation'
 import Link from 'next/link'
 
 const menuItems = [
@@ -26,6 +26,7 @@ export default function ExampleNavbarFour() {
   const [isLogin, setLogin] = useState(false)
 
   const router = useRouter();
+  const location = usePathname();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -66,7 +67,7 @@ export default function ExampleNavbarFour() {
     console.log(isLogin)
   }
   useEffect(() => {
-    checkLogin();
+    checkLogin(location);
   },[])
 
   return (
