@@ -67,8 +67,8 @@ export default function ExampleNavbarFour() {
     console.log(isLogin)
   }
   useEffect(() => {
-    checkLogin(location);
-  },[])
+    checkLogin();
+  },[location])
 
   return (
     <div className="relative w-full bg-white">
