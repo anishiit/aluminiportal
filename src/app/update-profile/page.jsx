@@ -10,6 +10,7 @@ import { branch } from '@/data/branch';
 
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
+import Link from 'next/link';
 
 
   
@@ -58,8 +59,16 @@ function Page() {
         })
       
       }
+      const [user ,setUser]=useState(undefined);
         // Load data from local storage on component mount
   useEffect(() => {
+    if(typeof window !== undefined){
+      const usr =JSON.parse(localStorage.getItem("user-threads"));
+    if(usr) {
+      setUser(usr);
+    }
+
+    }
    fetchUser();
   }, []);
 
@@ -128,13 +137,13 @@ function Page() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
             Kr do sir update😎{' '}
-            <a
-              href="../profile/:user_id"
+            <Link
+              href={`/profile/${user?._id}`}
               title=""
               className="font-semibold text-black transition-all duration-200 hover:underline"
             >
               Go to Profile
-            </a>
+            </Link>
           </p>
           <form onSubmit={handleSignup} method="POST" className="mt-8">
             <div className="space-y-5">

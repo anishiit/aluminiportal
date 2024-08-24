@@ -6,6 +6,7 @@ import {collegeName} from '/src/data/college.js'
 // import { useSetRecoilState } from 'recoil';
 
 import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
 
   
@@ -98,13 +99,13 @@ function Page() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
             have an account?{' '}
-            <a
+            <Link
               href="../login"
               title=""
               className="font-semibold text-black transition-all duration-200 hover:underline"
             >
               Login to your account
-            </a>
+            </Link>
           </p>
           <form action="#" method="POST" className="mt-8">
             <div className="space-y-5">
