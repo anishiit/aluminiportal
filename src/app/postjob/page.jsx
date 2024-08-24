@@ -16,11 +16,14 @@ export default function ContactPageOne() {
 
     const [thumbnail ,setThumbnail] = useState(undefined);
     const [msg,setmsg] = useState("");
+    const [err,seterr] = useState("");
 
 
 
     async function handleSubmit(e){
         e.preventDefault();
+        seterr("")
+        setmsg("Posting..")
         console.log("posting job")
         let user;
         if(typeof window !== undefined){
@@ -52,13 +55,19 @@ export default function ContactPageOne() {
                   url:"",
                 })
                 setThumbnail({});
-                setmsg(res.data.msg);
+                setmsg(String(res.data.msg).toUpperCase());
+                setInput({})
+                setThumbnail({})
             })
             .catch((err) => {
                 console.log(err);
+                setmsg("")
+                seterr(err.response.data.message);
             })
         } catch (error) {
             console.log(error)
+            setmsg("")
+            seterr(error.message);
         }
     }
 
@@ -72,13 +81,9 @@ export default function ContactPageOne() {
         <div className="flex flex-col space-y-8 pb-5 pt-10 md:pt-16 outline-none">
           <div className="mx-auto max-w-max rounded-full border bg-gray-50 p-1 px-3">
             <p className="text-center text-xs font-semibold leading-normal md:text-sm">
-              Share your thoughts
+              Share your Job Post
             </p>
           </div>
-          <p className="mx-auto max-w-2xl text-center text-base text-gray-600 md:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore veritatis voluptates
-            neque itaque repudiandae sint, explicabo assumenda quam ratione placeat?
-          </p>
         </div>
         <div className="grid items-center justify-items-center mx-auto max-w-7xl py-12 md:py-14">
             {/* contact from */}
@@ -89,8 +94,12 @@ export default function ContactPageOne() {
                   Our friendly team would love to hear from you.
                 </p> */}
 
+
                 <form onSubmit={handleSubmit} className="mt-8 space-y-4  md:w-[500px] w-[350px]">
                   <div className="grid w-full items-center gap-1.5">
+
+                    <p className='text-blue-700 text-center text-lg font-semibold '>{msg}</p>
+
                     <div className="grid w-full  items-center gap-1.5">
                       <label
                         className="text-sm font-medium leading-none text-gray-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -161,9 +170,9 @@ export default function ContactPageOne() {
                        }}
                     >
                         <option className='text-black dark:text-gray-300' value="">Select Category</option>
-                        <option className='text-black dark:text-gray-300' value="category1">category1</option>
-                        <option className='text-black dark:text-gray-300' value="category2">category3</option>
-                        <option className='text-black dark:text-gray-300' value="category4">category4</option>
+                        <option className='text-black dark:text-gray-300' value="SDE1">SDE1</option>
+                        <option className='text-black dark:text-gray-300' value="SDE2">SDE2</option>
+                        <option className='text-black dark:text-gray-300' value="SDE3">SDE3</option>
                     </select>
                   </div>
                   <div className="grid w-full  items-center gap-1.5">
@@ -184,6 +193,7 @@ export default function ContactPageOne() {
                         }}
                       />
                   </div>
+                  <p className='text-red-500 text-center text-lg font-semibold'>{err}</p>
                   <button
                     type="submit"
                     onClick={handleSubmit}

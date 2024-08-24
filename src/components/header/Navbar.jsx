@@ -21,6 +21,14 @@ const menuItems = [
     name:"Network",
     href:"/network"
   },
+  {
+    name:"Donate",
+    href:"/donation"
+  },
+  {
+    name:"Batch",
+    href:"/batch"
+  },
 ]
 
 

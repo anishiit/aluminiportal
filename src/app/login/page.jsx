@@ -6,6 +6,7 @@ import {collegeName} from '/src/data/college.js'
 // import { useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import axios from 'axios';
 
 
 function Page() {
@@ -19,36 +20,32 @@ function Page() {
       
       const handleSignup = async (e) => {
         e.preventDefault();
-        console.log(inputs);
+        setError("")
+        // console.log(inputs);
       setError("");
         // Check if any field is empty
         if ( !inputs.email || !inputs.password ) {
-          setError("Pura Bhr de lwde");
+          setError("All fields are required!");
           return; // Exit the function if any field is empty
         }
       
         try {
-          const res = await fetch("https://alumini-portal-backend.onrender.com/user/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-          });
-      
-          const data = await res.json();
-      
-          if (!res.ok || data.error) {
-            throw new Error(data.error || "Signup failed");
-          }
-      
-          if (typeof window !== 'undefined') {
-            window.localStorage.setItem("user-threads", JSON.stringify(data.user));
-            // setUser(data);
-            window.localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
-            router.push('/home');
-            console.log(data.user);
-          }
+          await axios.post("https://alumini-portal-backend.onrender.com/user/login" , {
+            email:inputs.email,
+            password:inputs.password,
+          })
+          .then((res) => {
+            // console.log(res.data);
+            if(typeof window !== undefined){
+              const user = JSON.stringify(res.data.user);
+              localStorage.setItem("user-threads" , user)
+            }
+            router.push('/home')
+          })
+          .catch((err) => {
+            console.log(err);
+            setError(err.response.data.msg);
+          })
       
         } catch (error) {
           console.error(error);
@@ -143,7 +140,7 @@ function Page() {
               </div>
             
               <div>
-              <p className='text-red-600 text-center font-semibold text-sm' >{error}</p>
+              <p className='text-red-500 text-center font-semibold text-lg my-1' >{error}</p>
                 <button
                   type="button"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"

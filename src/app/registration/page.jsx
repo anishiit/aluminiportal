@@ -26,34 +26,33 @@ function Page() {
       setError("");
         // Check if any field is empty
         if (!inputs.name || !inputs.email || !inputs.password || !inputs.collegeName) {
-          setError("Pura Bhr de lwde");
+          setError("All filds are required!");
           return; // Exit the function if any field is empty
         }
       
         try {
-          const res = await fetch("https://alumini-portal-backend.onrender.com/user/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-          });
+          await axios.post("https://alumini-portal-backend.onrender.com/user/register" , {
+            name: inputs.name,
+            email: inputs.email,
+            password: inputs.password,
+            collegeName: inputs.collegeName,
+          })
+          .then((res) => {
+            // console.log(res.data);
+            if(typeof window !== undefined){
+              const user = JSON.stringify(res.data.user);
+              localStorage.setItem("user-threads" , user)
+            }
+            router.push('/login')
+          })
+          .catch((err) => {
+            console.log(err);
+            setError(err.response.data.msg);
+          })
       
-          const data = await res.json();
-          console.log(data.user);
-          if (!res.ok || data.error) {
-            throw new Error(data.error || "Signup failed");
-          }
-      
-          if (typeof window !== 'undefined') {
-            window.localStorage.setItem("user-threads", JSON.stringify(data.user));
-            // setUser(data.user);
-            router.push('../login')
-          }
-          
-          
         } catch (error) {
           console.error(error);
+          setError(error.message);
         }
       };
       
@@ -176,7 +175,7 @@ function Page() {
                 </div>
               </div>
               <div>
-              <p className='text-red-600 text-center font-semibold text-sm' >{error}</p>
+              <p className='text-red-500 text-center font-semibold text-lg' >{error}</p>
                 <button
                   type="button"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
@@ -200,6 +199,3 @@ function Page() {
 }
 
 export default Page
-
-
-
