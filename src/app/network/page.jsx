@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios'
-import { useState,useEffect} from 'react'
+import React , { useState,useEffect} from 'react'
 
 
 const peopleUnConnected = [
@@ -46,7 +46,7 @@ const peopleConnected = [
  
 
 
-function page() {
+function Page() {
 
 // const [curr ,setCurr]=useState();
     const [x1,setx1]=useState(true);
@@ -331,4 +331,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
