@@ -1,10 +1,17 @@
+"use client"
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react'
+import { usePathname } from 'next/navigation';
+import axios from 'axios';
+
 const Profile = ({ user }) => {
   const [connect, setConnect] = useState(user.isFollowing);
 
- 
+  const location = usePathname(); 
+  const userId = location.substring(9);
+  const [usr, setUsr] = useState({});
+  const [err, setErr] = useState("");
    
     // Logic to handle follow request
     const handleFollow = async () => {
@@ -19,6 +26,21 @@ const Profile = ({ user }) => {
         }
       };
 
+    async function getUser(){
+      try {
+        await axios.post("https://alumini-portal-backend.onrender.com/user/getuser",{userId:userId})
+        .then((res) => {
+          // console.log(res.data);
+          setUsr(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+          setErr(err.response.data.msg);
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
   const handleMessage = () => {
     // Logic to open a messaging interface
@@ -27,6 +49,10 @@ const Profile = ({ user }) => {
   const handleDonate = () => {
     // Logic to handle donation (e.g., open a payment gateway)
   };
+  useEffect(() => {
+    console.log(userId)
+    getUser();
+  },[])
 
   return (
    <div className='flex justify-center'>
@@ -41,7 +67,7 @@ const Profile = ({ user }) => {
       <div>
         <div className="p-4">
           <h1 className="inline-flex items-center text-lg font-semibold">
-            Name <ArrowUpRight className="ml-2 h-4 w-4" />
+            {usr?.name} <ArrowUpRight className="ml-2 h-4 w-4" />
           </h1>
           <p className="mt-3 text-sm text-gray-600">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, debitis?

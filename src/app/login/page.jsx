@@ -45,7 +45,7 @@ function page() {
             window.localStorage.setItem("user-threads", JSON.stringify(data.user));
             // setUser(data);
             window.localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
-            router.push('../profile/:user_id');
+            router.push('/home');
             console.log(data.user);
           }
       

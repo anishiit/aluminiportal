@@ -10,18 +10,25 @@ const menuItems = [
     href: '/home',
   },
   {
-    name: 'About',
-    href: '/about',
+    name:"Posts",
+    href:"/jobposts"
   },
   {
-    name: 'Contact',
-    href: '/contact',
+    name:"Post Job",
+    href:"/postjob"
+  },
+  {
+    name:"Network",
+    href:"/network"
   },
 ]
 
 
 export default function ExampleNavbarFour() {
 
+  
+
+  const [user, setUser] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLogin, setLogin] = useState(false)
 
@@ -61,6 +68,7 @@ export default function ExampleNavbarFour() {
     }
     if(user !== null && user!== undefined && user !== "undefined"){
       setLogin(true)
+      setUser(user);
     }else{
       setLogin(false)
     }
@@ -94,7 +102,7 @@ export default function ExampleNavbarFour() {
           <ul className="ml-12 inline-flex space-x-8">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
                   className="inline-flex items-center text-sm font-semibold text-gray-800 hover:text-gray-900"
                 >
@@ -102,7 +110,7 @@ export default function ExampleNavbarFour() {
                   <span>
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -110,34 +118,32 @@ export default function ExampleNavbarFour() {
         {
           isLogin === true ? (
             <>
-            <div className="flex grow justify-end">
-         
-            </div>
-            <div className="ml-2 mt-2 hidden lg:block">
-            <Link href="/profile/:user_id">
-            <span className="relative inline-block">
-              <img
-                className="h-10 w-10 rounded-full"
-                src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                alt="Dan_Abromov"
-              />
-              <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
-            </span>
-            </Link>
-            </div>
-            <div>
-              <button onClick={handleLogout}>
-                logout
-              </button>
-            </div>
+             <div className='flex flex-row'>
+              <div className='mx-2 my-auto'>
+                <button className='border-gray-700 border-[1px] rounded-md hover:bg-red-600 px-2 py-1'
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+              <div className='mx-1 p-1 hover:bg-slate-300 rounded-full'>
+                <Link href={`/profile/${user._id}`}>
+                  <img 
+                    className="inline-block h-10 w-10 rounded-full"
+                    src={user?.profileImg || "/image/profileLogo.png"}
+                    alt="userImg"
+                  />
+                </Link>
+              </div>
+             </div>
             </>
           ) : (
            <div>
-            <button onClick={gotoRegistartion}>
+            <button className='border-gray-700 mx-2 border-[1px] rounded-md hover:bg-blue-500 hover:text-gray-50 px-2 py-1' onClick={gotoRegistartion}>
                 Signup 
              </button>
-            <button onClick={gotoLogin}>
-                login 
+            <button className='border-gray-700 mx-2 border-[1px] rounded-md hover:bg-blue-500 hover:text-gray-50 px-2 py-1' onClick={gotoLogin}>
+                Login 
              </button>
 
            </div>
@@ -183,7 +189,7 @@ export default function ExampleNavbarFour() {
                 <div className="mt-6">
                   <nav className="grid gap-y-4">
                     {menuItems.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50"
@@ -194,20 +200,20 @@ export default function ExampleNavbarFour() {
                         <span>
                           <ChevronRight className="ml-3 h-4 w-4" />
                         </span>
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>
-                <Link href='/'>
+                <Link href={`/profile/${user?._id}`}>
                 <div className="ml-3 mt-4 flex items-center space-x-2">
                   <img
                     className="inline-block h-10 w-10 rounded-full"
-                    src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                    alt="Dan_Abromov"
+                    src={user?.profileImg || "/image/profileLogo.png"}
+                    alt="userImg"
                   />
                   <span className="flex flex-col">
-                    <span className="text-sm font-medium text-gray-900">Dan Abromov</span>
-                    <span className="text-sm font-medium text-gray-500">@dan_abromov</span>
+                    <span className="text-base font-medium text-gray-900">{user.name}</span>
+                    {/* <span className="text-sm font-medium text-gray-500">@dan_abromov</span> */}
                   </span>
                 </div></Link>
               </div>
