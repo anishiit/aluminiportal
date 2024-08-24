@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export default function ContactPageOne() {
 
-    const url = "http://localhost:4000/post/postjob";
+    const url = "https://alumini-portal-backend.onrender.com/post/postjob";
   
     const [input , setInput] = useState({
         title:"",
