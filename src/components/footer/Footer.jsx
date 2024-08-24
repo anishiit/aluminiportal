@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="mt-5 bg-white ">
         <div className="max-w-screen-xl p-4 mx-auto space-y-2 overflow-hidden sm:px-6 lg:px-8">
             <nav className="flex flex-wrap justify-center -mx-5">
-                <Link href={'/faq'} >
+                <Link href={'#'}>
                     <h3 className="text-base md:text-lg px-5 py-4 text-gray-600 hover:text-blue-700 hover:dark:text-blue-400 ">FAQ</h3>
                 </Link>
                 <Link href={'/about'} >

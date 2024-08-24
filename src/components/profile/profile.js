@@ -105,7 +105,7 @@ const Profile = ({ user }) => {
           <div className="mt-3 flex items-center space-x-2">
           {
             iscurrent === true ? (
-              <button className="rounded-full bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+              <button onClick={()=>{router.push('/donation')}} className="rounded-full bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
                 Donate
               </button>
             ) : (
