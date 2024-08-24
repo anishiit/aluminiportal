@@ -95,7 +95,7 @@ function Page() {
             Login to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
-            Don't have an account?{' '}
+            Do not have an account?{' '}
             <a
               href="../registration"
               title=""
