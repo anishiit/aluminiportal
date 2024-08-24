@@ -1,5 +1,6 @@
 "use client"
 import axios from 'axios'
+import Link from 'next/link'
 import React , { useState,useEffect} from 'react'
 
 
@@ -225,6 +226,7 @@ function Page() {
                     {myinvitations?.map((person) => (
                       <tr key={person.name}>
                         <td className="whitespace-nowrap px-4 py-4">
+                        <Link href={`/profile/${person?.userId}`}>
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
@@ -235,9 +237,9 @@ function Page() {
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">{person.name}</div>
-                              <div className="text-sm text-gray-700">{person.email}</div>
                             </div>
                           </div>
+                          </Link>
                         </td>
         
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
@@ -289,7 +291,9 @@ function Page() {
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {myConnections?.map((person) => (
                       <tr key={person.name}>
+
                         <td className="whitespace-nowrap px-4 py-4">
+                        <Link href={`/profile/${person?.userId}`}>
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
@@ -303,6 +307,7 @@ function Page() {
                               <div className="text-sm text-gray-700">{person.email}</div>
                             </div>
                           </div>
+                          </Link>
                         </td>
                        
                        
