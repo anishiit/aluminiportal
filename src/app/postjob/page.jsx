@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export default function ContactPageOne() {
 
-    const url = "https://alumini-portal-backend.onrender.com/post/postjob";
+    const url = "http://localhost:4000/post/postjob";
   
     const [input , setInput] = useState({
         title:"",
@@ -15,6 +15,7 @@ export default function ContactPageOne() {
     });
 
     const [thumbnail ,setThumbnail] = useState(undefined);
+    const [msg,setmsg] = useState("");
 
 
 
@@ -44,6 +45,14 @@ export default function ContactPageOne() {
             await axios.post(url,form)
             .then((res) => {
                 console.log(res.data);
+                setInput({
+                  title:"",
+                  description:"",
+                  category:"",
+                  url:"",
+                })
+                setThumbnail({});
+                setmsg(res.data.msg);
             })
             .catch((err) => {
                 console.log(err);
