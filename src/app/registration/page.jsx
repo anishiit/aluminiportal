@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import {collegeName} from '/src/data/college.js'
 // import userAtom from "/src/atom/userAtom.js";
 // import { useSetRecoilState } from 'recoil';
-
+import axios from 'axios';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 
