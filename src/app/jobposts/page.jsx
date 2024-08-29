@@ -95,32 +95,31 @@ const JobPostsPage = async () => {
                 </div>
                 {/* posts */}
                 <div className="grid gap-6 gap-y-10 py-6 md:grid-cols-2 lg:grid-cols-3">
-                    {posts.map((post) => (
-                        <div key={post?.title} className="border">
-                            <img src={post?.thumbnail} className="aspect-video w-full rounded-md" alt="" />
-                            <div className="min-h-min p-3">
-                                <p className="mt-4 w-full text-xs font-semibold leading-tight text-gray-700">
-                                    #{post?.category}
-                                </p>
-                                <p className="mt-4 flex-1 text-base font-semibold text-gray-900">{post?.title}</p>
-                                <p className="mt-4 w-full text-sm leading-normal text-gray-600">
-                                    {post?.description}
-                                </p>
-                                <Link href={`/profile/${post.postedBy}`}>
-                                <div className="mt-4 flex space-x-3 ">
-                                    
-                                    <img className="h-full w-10 rounded-lg" src={post?.userImg || "https://picsum.photos/200"} alt={post?.postedByName} />
-                                    <div>
-                                        <p className="text-base font-semibold leading-tight text-gray-900">
-                                            {post?.postedByName}
-                                        </p>
-                                        {/* <p className="text-sm leading-tight text-gray-600">{post?.createdAt?.subString(0,11)}</p> */}
-                                    </div>  
-                                </div>
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
+                {posts.slice().reverse().map((post) => (
+    <div key={post?.title} className="border">
+        <img src={post?.thumbnail} className="aspect-video w-full rounded-md" alt="" />
+        <div className="min-h-min p-3">
+            <p className="mt-4 w-full text-xs font-semibold leading-tight text-gray-700">
+                #{post?.category}
+            </p>
+            <p className="mt-4 flex-1 text-base font-semibold text-gray-900">{post?.title}</p>
+            <p className="mt-4 w-full text-sm leading-normal text-gray-600">
+                {post?.description}
+            </p>
+            <Link href={`/profile/${post.postedBy}`}>
+                <div className="mt-4 flex space-x-3">
+                    <img className="h-full w-10 rounded-lg" src={post?.userImg || "https://picsum.photos/200"} alt={post?.postedByName} />
+                    <div>
+                        <p className="text-base font-semibold leading-tight text-gray-900">
+                            {post?.postedByName}
+                        </p>
+                    </div>  
+                </div>
+            </Link>
+        </div>
+    </div>
+))}
+
                 </div>
             </div>
             <div className="mx-auto mt-12 max-w-7xl bg-gray-50">
