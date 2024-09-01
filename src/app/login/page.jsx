@@ -7,6 +7,7 @@ import {collegeName} from '/src/data/college.js'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import axios from 'axios';
+import { loginUserUrl } from '@/urls/urls';
 
 
 function Page() {
@@ -30,7 +31,7 @@ function Page() {
         }
       
         try {
-          await axios.post("https://alumini-portal-backend.onrender.com/user/login" , {
+          await axios.post(loginUserUrl , {
             email:inputs.email,
             password:inputs.password,
           })

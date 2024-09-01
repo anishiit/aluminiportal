@@ -4,6 +4,7 @@ import { useState,useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react'
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
+import { createUserInvitationUrl, getUserInfoUrl } from '@/urls/urls';
 
 import { useRouter } from 'next/navigation'
 import './profileBtn.css'
@@ -26,7 +27,7 @@ const Profile = ({ user }) => {
       //   setcurrent(true);
       // }
         setConnect(!connect);
-        await axios.post("https://alumini-portal-backend.onrender.com/user/createinvitation" , {
+        await axios.post(createUserInvitationUrl , {
           toUserId:usr._id,
           fromUserId:user._id,
         })
@@ -41,7 +42,7 @@ const Profile = ({ user }) => {
 
     async function getUser(){
       try {
-        await axios.post("https://alumini-portal-backend.onrender.com/user/getuser",{userId:userId})
+        await axios.post(getUserInfoUrl,{userId:userId})
         .then((res) => {
           // console.log(res.data);
           setUsr(res.data.user);

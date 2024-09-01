@@ -2,7 +2,7 @@
 import axios from 'axios'
 import Link from 'next/link'
 import React , { useState,useEffect} from 'react'
-
+import { getUserInvitationsUrl, getUserConnectionsUrl } from '@/urls/urls'
 
 const peopleUnConnected = [
   {
@@ -75,7 +75,7 @@ function Page() {
           user = JSON.parse(localStorage.getItem("user-threads"))
         console.log(user);
         try {
-            await axios.post('https://alumini-portal-backend.onrender.com/user/getinvitations', {
+            await axios.post(getUserInvitationsUrl, {
                 userId: user._id
             }).then((res) => {
                 console.log(res.data)
@@ -95,7 +95,7 @@ function Page() {
           user = JSON.parse(localStorage.getItem("user-threads"))
         try {
           console.log(user)
-            await axios.post('https://alumini-portal-backend.onrender.com/user/getconnectedusers', {
+            await axios.post(getUserConnectionsUrl, {
                 userId: user._id
             }).then((res) => {
                 console.log(res.data)
