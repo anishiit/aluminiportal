@@ -1,3 +1,27 @@
+# Alumni Portal – College Alumni Registration and Admin Management System
+
+The **Alumni Portal** is a web application designed to connect alumni with their alma mater, enabling seamless registration and profile management. It also provides an admin dashboard for managing alumni profiles, showcasing featured alumni, and promoting upcoming events.
+
+## Key Features
+
+- **Alumni Registration**: Alumni can register their profiles, including details such as name, graduation year, and current role.
+- **Admin Dashboard**: Administrators can manage alumni profiles (approve, update, or delete) and control platform content.
+- **Event Management**: Admins can create and manage upcoming events to keep the alumni community engaged.
+- **Featured Alumni**: Highlight distinguished alumni with their image, name, and position to inspire current students and other alumni.
+
+## Tech Stack
+
+- **Frontend**: Next.js, Tailwind CSS
+- **Animations**: GSAP (GreenSock Animation Platform)
+- **Backend**: Node.js, Express.js
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
