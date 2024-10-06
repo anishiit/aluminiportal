@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Bell, Calendar, GraduationCap, LayoutDashboard, LogOut, Mail, Menu, User, Users, X } from "lucide-react"
+import { Bell, Calendar,  LayoutDashboard, LogOut, Mail, Menu, User, Users, X , GraduationCap,Briefcase, Search } from "lucide-react"
 import { useRouter} from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,12 +17,13 @@ export default function AlumniHome() {
   const toggleMenu = () => setIsOpen(!isOpen)
 
   const navItems = [
-    { name: "Dashboard", href: "#dashboard", icon: <LayoutDashboard className="h-4 w-4 mr-2" /> },
     { name: "Messages", href: "#messages", icon: <Mail className="h-4 w-4 mr-2" /> },
     { name: "Events", href: "#events", icon: <Calendar className="h-4 w-4 mr-2" /> },
     { name: "Alumni", href: "#alumni", icon: <Users className="h-4 w-4 mr-2" /> },
     { name: "Get Involved", href: "#get-involved", icon: <Bell className="h-4 w-4 mr-2" /> },
     { name: "Profile", href: "#profile", icon: <User className="h-4 w-4 mr-2" /> },
+    { name: "Post Job", href: "/postjob",  external: true , icon: <Briefcase className="h-4 w-4 mr-2" /> },
+    { name: "Search Job", href: "/jobposts", external: true , icon: <Search className="h-4 w-4 mr-2" /> },
   ]
 
   const scrollToSection = (href) => {
@@ -93,22 +94,33 @@ const handleLogout =  (e) => {
             <GraduationCap className="h-8 w-8 text-blue-600" />
             <span className="font-bold text-2xl text-black">{userData.collegeName}</span>
           </Link>
+       
           <nav className="hidden md:flex gap-6">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center"
-                onClick={(e) => {
-                  e.preventDefault()
-                  scrollToSection(item.href)
-                }}
-              >
-                {item.icon}
-                {item.name}
-              </a>
-            ))}
-          </nav>
+    {navItems.map((item) => (
+      item.external ? (
+        // For external links, directly use the Link component without <a> tag
+        <Link key={item.name} href={item.href} className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+          {item.icon}
+          {item.name}
+        </Link>
+      ) : (
+        // For internal scroll links, keep the original logic
+        <a
+          key={item.name}
+          href={item.href}
+          className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection(item.href);
+          }}
+        >
+          {item.icon}
+          {item.name}
+        </a>
+      )
+    ))}
+  </nav>
+
           <div className="flex items-center gap-4">
             {/* <Avatar>
               <AvatarImage src="/image/profileLogo.png" alt="Alumnus" />
