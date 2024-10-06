@@ -232,7 +232,7 @@ export default function Component() {
             </h2>
             <div className="max-w-md mx-auto">
               <p className="text-center mb-4">
-                Have questions or want to get in touch? We'd love to hear from you!
+                Have questions or want to get in touch? We&apos;d love to hear from you!
               </p>
               <Button size="lg" className="w-full">
                 Get in Touch
