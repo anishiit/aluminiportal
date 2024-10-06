@@ -7,6 +7,7 @@ import {collegeName} from '/src/data/college.js'
 import axios from 'axios';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
+import { registerUserUrl } from '@/urls/urls';
 
 
   
@@ -31,7 +32,7 @@ function Page() {
         }
       
         try {
-          await axios.post("https://alumini-portal-backend.onrender.com/user/register" , {
+          await axios.post(registerUserUrl , {
             name: inputs.name,
             email: inputs.email,
             password: inputs.password,

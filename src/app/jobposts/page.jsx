@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import Link from "next/link"
-
+import { getAllPostsUrl } from "@/urls/urls"
 
 const JobPostsPage = async () => {
 
-    const getJobPostUrl = "https://alumini-portal-backend.onrender.com/post/getjobs"
+    const getJobPostUrl = getAllPostsUrl
 
     const menuItems = [
         {
