@@ -13,7 +13,7 @@ export default function CardTwo() {
     if(typeof window !== undefined){
       const allPosts = JSON.parse(localStorage.getItem("posts"));
       console.log(allPosts)
-      const usrPosts = allPosts.filter(post => post.postedBy.includes(userId));
+      const usrPosts = allPosts?.filter(post => post.postedBy.includes(userId));
       console.log(usrPosts);
       setPosts(usrPosts);
    }
@@ -31,7 +31,7 @@ export default function CardTwo() {
     </div>
     <div className='w-full max-h-full flex flex-wrap gap-3 p-3'>
       {
-        userPosts.map((post) => {
+        userPosts?.map((post) => {
           return (
             <>
             <div className="w-[300px] rounded-md border">

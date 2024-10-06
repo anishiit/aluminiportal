@@ -157,8 +157,16 @@ function Page() {
                 </div>
               </div>
               <div>
-               
+               <div  className="mt-2 w-full flex h-10 rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50">
+               <select className="w-full">
+                  <option>Select Role</option>
+                  <option>Alumni</option>
+                  <option>Student</option>
+                  <option>Guest</option>
+                </select>
+               </div>
                 <div className="mt-2 w-full flex h-10 rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50">
+                
                 <select 
   onChange={(e) => setInputs({ ...inputs, collegeName: e.target.value })} 
   className="w-full"
