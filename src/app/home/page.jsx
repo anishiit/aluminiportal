@@ -150,7 +150,16 @@ const handleLogout =  (e) => {
                 </div>
                 <nav className="flex flex-col gap-4">
                   {navItems.map((item) => (
-                    <SheetClose asChild key={item.name}>
+                    item.external ?(
+                      <SheetClose asChild key={item.name}>
+                      <Link key={item.name} href={item.href} className="text-2xl font-semibold hover:text-blue-600 transition-colors flex items-center">
+                        {item.icon}
+                          {item.name}
+                        </Link> 
+                       </SheetClose>
+                    ):( 
+                       <SheetClose asChild key={item.name}>
+                    
                       <a
                         href={item.href}
                         className="text-2xl font-semibold hover:text-blue-600 transition-colors flex items-center"
@@ -162,7 +171,8 @@ const handleLogout =  (e) => {
                         {item.icon}
                         {item.name}
                       </a>
-                    </SheetClose>
+                    </SheetClose>)
+                  
                   ))}
                 </nav>
                 <div className="mt-auto">
