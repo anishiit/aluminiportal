@@ -18,6 +18,9 @@ export default function Component() {
   const handleLogin= () =>{
     router.push('/login')
   }
+  const handleCollegeRegistration =()=>{
+    router.push('/collegeRegistration');
+  }
   const navItems = [
     { name: "Events", href: "#events" },
     { name: "Alumni", href: "#alumni" },
@@ -80,9 +83,13 @@ export default function Component() {
               </a>
             ))}
           </nav>
-          <Button onClick={handleLogin} className="hidden md:inline-flex" size="lg">
+          <div className ="mx-1"><Button onClick={handleCollegeRegistration} className="hidden md:inline-flex" variant="outline" size="lg">
+              College Registration
+            </Button>
+          <Button onClick={handleLogin} className="hidden md:inline-flex mx-2" size="lg">
             Login
-          </Button>
+          </Button></div>
+          
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -117,8 +124,13 @@ export default function Component() {
                   ))}
                 </nav>
                 <div className="mt-auto">
+                <SheetClose asChild>
+                    <Button onClick={handleCollegeRegistration} variant="outline" size="lg" className="w-full mt-4">
+                      College Registration
+                    </Button>
+                  </SheetClose>
                   <SheetClose asChild>
-                    <Button size="lg" className="w-full" onClick={()=>{ toggleMenu ; handleLogin()}}>Login</Button>
+                    <Button size="lg" className="w-full mt-1" onClick={()=>{ toggleMenu ; handleLogin()}}>Login</Button>
                   </SheetClose>
                 </div>
               </div>
