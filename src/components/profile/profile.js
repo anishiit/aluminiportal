@@ -8,6 +8,7 @@ import { createUserInvitationUrl, getUserInfoUrl } from '@/urls/urls';
 
 import { useRouter } from 'next/navigation'
 import './profileBtn.css'
+import Navbar2 from '../header/Navbar2';
 const Profile = ({ user }) => {
   const router = useRouter(); 
   const [connect, setConnect] = useState(user.isFollowing);
@@ -75,6 +76,8 @@ const Profile = ({ user }) => {
   },[])
 
   return (
+    <div>
+    <Navbar2 />
    <div className='flex justify-center'>
     <div className="flex max-w-2xl flex-col items-center rounded-md border md:flex-row">
       <div className="h-full w-full md:h-[200px] md:w-[300px]">
@@ -127,6 +130,7 @@ const Profile = ({ user }) => {
   
 
 
+    </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import Navbar2 from '@/components/header/Navbar2';
 
 export default function ContactPageOne() {
 
@@ -75,7 +76,7 @@ export default function ContactPageOne() {
 
   return (
     <div>
-
+      <Navbar2 />
       <div className="mx-auto max-w-7xl px-4">
         {/* Hero Map */}
         <div className="flex flex-col space-y-8 pb-5 pt-10 md:pt-16 outline-none">

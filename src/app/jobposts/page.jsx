@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Search, MapPin, Calendar, Bookmark, MessageCircle, Share2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import Navbar2 from "@/components/header/Navbar2"
 
 export default function SearchJob() {
   const [jobs, setJobs] = useState([])
@@ -104,7 +105,10 @@ export default function SearchJob() {
   }
 
   return (
+    <div className="flex flex-col min-h-screen bg-gray-50">
+    <Navbar2 />
     <div className="container mx-auto p-4 max-w-6xl">
+   
       <motion.div
         initial="hidden"
         animate="visible"
@@ -218,6 +222,7 @@ export default function SearchJob() {
           </motion.div>
         ))}
       </AnimatePresence>
+    </div>
     </div>
   )
 }
