@@ -76,14 +76,13 @@ function Page() {
         getMyConnection();
     },[isSomethingChamged])
 
-   async function handleAccept(userId){
+   async function handleAcceptInvitation(userIdInInvitations){
     let user;
     if(typeof window !== undefined)
       user = JSON.parse(localStorage.getItem("user-threads"))
     
     await axios.post("https://alumini-portal-backend.onrender.com/user/acceptinvitation" , {
-      userIdToAdd:userId,
-      toUserId:user._id,
+      userId1:user?._id , userId2:userIdInInvitations
     })
     .then((res) => {
       console.log(res.data);
@@ -94,14 +93,14 @@ function Page() {
     })
     }
 
-   async function handleDecline(userId){
+   async function handleDeclineInvitation(userIdFromInvitations){
     
     let user;
     if(typeof window !== undefined)
       user = JSON.parse(localStorage.getItem("user-threads"))
     await axios.post("https://alumini-portal-backend.onrender.com/user/cancleinvitation" , {
-      userIdToRemove:userId,
-      fromUserId:user._id,
+      userId1:user?._id,
+      userId2:userIdFromInvitations,
     })
     .then((res) => {
       console.log(res.data);
@@ -112,7 +111,7 @@ function Page() {
     })
     }
 
-  async  function handleRemove(userId){
+  async  function handleRemoveConnection(userId){
  
     let user;
     if(typeof window !== undefined)
@@ -207,11 +206,11 @@ function Page() {
         
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                         <div className="flex items-center gap-4">
-                        <button onClick={(e) => {handleAccept(person.userId)}} 
+                        <button onClick={(e) => {handleAcceptInvitation(person.userId)}} 
                          className="bg-green-500 text-green-50 hover:bg-green-600 h-8 w-20 rounded-md">
                           Accept
                         </button>
-                        <button  onClick={(e) => {handleDecline(person.userId)}}  
+                        <button  onClick={(e) => {handleDeclineInvitation(person.userId)}}  
                           className="bg-red-500 text-blue-50 hover:bg-red-600 h-8 w-20 rounded-md">
                           Decline
                         </button>
@@ -278,7 +277,7 @@ function Page() {
                         <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                         <div className="flex items-center gap-4">
    
-      <button  onClick={(e) => {handleRemove(person.userId)}}  className="bg-red-500 text-blue-50 hover:bg-red-600 h-8 w-20 rounded-md">
+      <button  onClick={(e) => {handleRemoveConnection(person.userId)}}  className="bg-red-500 text-blue-50 hover:bg-red-600 h-8 w-20 rounded-md">
         Remove
       </button>
     </div>

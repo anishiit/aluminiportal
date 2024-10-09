@@ -14,6 +14,8 @@ export const getUserConnectionsUrl = "https://alumni-portal-backend.vercel.app/u
 
 export const deleteUserConnectionUrl = "https://alumni-portal-backend.vercel.app/user/deleteconnection"
 
+export const getAllCollegeUsersUrl = `${process.env.USER_BACKEND_URL}/user/getcollegeusers`
+
 // post urls => 
 
 export const getAllPostsUrl = "https://alumni-portal-backend.vercel.app/post/getjobs"
