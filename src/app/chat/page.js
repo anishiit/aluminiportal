@@ -13,7 +13,7 @@ import { Search, Users, Plus, ArrowLeft, Send, User } from 'lucide-react'
 import axios from 'axios'
 import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
-import { getUserChatsUrl, getChatByIdUrl } from '@/urls/urls.js'
+import { getUserChatsUrl, getChatByIdUrl, chat_backend_url } from '@/urls/urls.js'
 
 // Socket io connection => 
 
@@ -56,7 +56,7 @@ function ChatView({ chat, onBack }) {
   }
 
   const socket = useMemo(() => {
-    return (io(`${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}`));
+    return (io(`${chat_backend_url}`));
   }, [roomId])
 
 useEffect(() => {

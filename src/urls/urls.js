@@ -1,3 +1,6 @@
+export const user_backend_url = "https://alumni-portal-backend.vercel.app"
+export const chat_backend_url = "https://alumni-portal-chatservice-backend.onrender.com"
+
 // user urls => 
 
 export const registerUserUrl = "https://alumni-portal-backend.vercel.app/user/register"
