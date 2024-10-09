@@ -9,11 +9,11 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { ArrowLeft, Search, UserPlus, UserCheck } from "lucide-react"
 import Link from "next/link"
 import axios from "axios"
-// import { getAllCollegeUsersUrl } from "@/urls/urls.js";
+import { getAllCollegeUsersUrl,connectUsersUrl,createChatOfUsers } from "@/urls/urls.js";
 
-const getAllCollegeUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/getcollegeusers`
-const connectUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/connectusers`;
-const createChatOfUsers = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/chat/createchat`
+// const getAllCollegeUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/getcollegeusers`
+// const connectUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/connectusers`;
+// const createChatOfUsers = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/chat/createchat`
 
 
 export default function UserConnectionPage() {

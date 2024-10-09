@@ -13,10 +13,11 @@ import { Search, Users, Plus, ArrowLeft, Send, User } from 'lucide-react'
 import axios from 'axios'
 import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
+import { getUserChatsUrl, getChatByIdUrl } from '@/urls/urls.js'
 
 // Socket io connection => 
 
-const ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL_CHAT}`
+// const ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL_CHAT}`
 
 
 // let username;
@@ -28,10 +29,8 @@ const ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL_CHAT}`
 // }
 // const getUserDataUrl = `${ process.env.NEXT_PUBLIC_BACKEND_URL }/api/user/getuser`;
 // const createNewChatUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL_CHAT}/api/chat/createnewchat`;
-const getUserChatsUrl = `${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL }/chat/getuserchats`;
-const getUserGroupsUrl = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/groupchat/getusergroups`
-const pushMessageInGroup = `${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL }/groupchat/pushmessageingroup`
-const getChatByIdUrl = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/chat/getchatbyid`;
+// const getUserChatsUrl = `${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL }/chat/getuserchats`;
+// const getChatByIdUrl = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/chat/getchatbyid`;
 const getGroupChatByIdUrl = `${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL }/groupchat/getgroupchatbyid`;
 const createGroupUrl = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/groupchat/creategroup`;
 

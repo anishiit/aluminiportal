@@ -14,7 +14,9 @@ export const getUserConnectionsUrl = "https://alumni-portal-backend.vercel.app/u
 
 export const deleteUserConnectionUrl = "https://alumni-portal-backend.vercel.app/user/deleteconnection"
 
-export const getAllCollegeUsersUrl = `${process.env.USER_BACKEND_URL}/user/getcollegeusers`
+export const getAllCollegeUsersUrl = `https://alumni-portal-backend.vercel.app/user/getcollegeusers`
+
+export const connectUsersUrl = "https://alumni-portal-backend.vercel.app/user/connectusers"
 
 // post urls => 
 
@@ -22,5 +24,11 @@ export const getAllPostsUrl = "https://alumni-portal-backend.vercel.app/post/get
 
 export const postUserPostUrl = "https://alumni-portal-backend.vercel.app/post/postjob"
 
+// chat urls =>
 
+export const createChatOfUsers = "https://alumni-portal-chatservice-backend.onrender.com/chat/createchat"
+
+export const getUserChatsUrl = "https://alumni-portal-chatservice-backend.onrender.com/chat/getuserchats"
+
+export const getChatByIdUrl = "https://alumni-portal-chatservice-backend.onrender.com/chat/getchatbyid"
 
