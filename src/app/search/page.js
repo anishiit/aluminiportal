@@ -11,9 +11,9 @@ import Link from "next/link"
 import axios from "axios"
 // import { getAllCollegeUsersUrl } from "@/urls/urls.js";
 
-const getAllCollegeUsersUrl = `http://localhost:3001/user/getcollegeusers`
-const connectUsersUrl = `http://localhost:3001/user/connectusers`;
-const createChatOfUsers = "http://localhost:4001/chat/createchat"
+const getAllCollegeUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/getcollegeusers`
+const connectUsersUrl = `${process.env.NEXT_PUBLIC_USER_BACKEND_URL}/user/connectusers`;
+const createChatOfUsers = `${process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}/chat/createchat`
 
 
 export default function UserConnectionPage() {
