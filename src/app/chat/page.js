@@ -56,7 +56,7 @@ function ChatView({ chat, onBack }) {
   }
 
   const socket = useMemo(() => {
-    return (io(`${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL }`));
+    return (io(`${ process.env.NEXT_PUBLIC_CHAT_BACKEND_URL}`));
   }, [roomId])
 
 useEffect(() => {
