@@ -52,12 +52,14 @@ function ChatView({ chat, onBack }) {
   const [change , setChange] = useState(1);
   const [Chat , setChat] = useState(chat);
 
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto", block: "end" })
   }
 
   const socket = useMemo(() => {
     return (io(`${chat_backend_url}`));
+  
   }, [roomId])
 
 useEffect(() => {
@@ -119,6 +121,7 @@ return (
       <Button variant="ghost" size="icon" onClick={onBack}>
         <ArrowLeft className="h-6 w-6" />
       </Button>
+     
       <Avatar>
         <AvatarImage src={Chat.avatar} alt={Chat.name} />
         <AvatarFallback className="text-black">{Chat.name[0].toUpperCase()}</AvatarFallback>
@@ -193,7 +196,7 @@ export default function WhatsAppClone() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState([])
   const [currentUsername, setCurrentUsername] = useState('');
-
+  const [loading ,setLoading] = useState(false);
   async function getUserChats(userId) {
     try {
       await axios.post(getUserChatsUrl, { userId:userId  })
@@ -220,6 +223,7 @@ export default function WhatsAppClone() {
             return obj;
           })
           // console.log(formatedChats);
+          setLoading(true);
           const sortedChats = sortChats(formatedChats);
           setChats(sortedChats);
           return sortedChats;
@@ -355,6 +359,7 @@ export default function WhatsAppClone() {
       <div className="w-full md:w-96 flex flex-col border-r">
         <div className="flex justify-between items-center p-4 bg-primary text-primary-foreground">
           <h1 className="text-xl font-bold">Chat</h1>
+          {loading === true ? (<></>):(<p>Messages are Loading...</p>)}
           {/* Add group button with dialog  */}
           <Dialog>
             <DialogTrigger className='bg-white' asChild>
