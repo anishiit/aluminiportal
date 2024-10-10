@@ -14,6 +14,10 @@ import axios from "axios"
 import { getAllCollegeUsersUrl, connectUsersUrl, createChatOfUsers } from "@/urls/urls.js"
 import Navbar2 from "@/components/header/Navbar2"
 
+import { useRouter } from 'next/navigation'
+
+
+
 export default function UserConnectionPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [users, setUsers] = useState([])
@@ -24,7 +28,7 @@ export default function UserConnectionPage() {
 
   const batches = ["All", "2015", "2016", "2017", "2018"]
   const branches = ["All", "Computer Science", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering"]
-
+  const router = useRouter()
   async function getAllCollegeUsers({ collegeName }) {
     try {
       let currUser = {}
@@ -189,7 +193,7 @@ export default function UserConnectionPage() {
                               </div>
                             </div>
                             <div className="mt-6 flex justify-center space-x-4">
-                              <Button variant="outline" size="sm" className="w-full">
+                              <Button  variant="outline" size="sm" className="w-full" onClick={() => router.push(`/profile/${user._id}`)}>
                                 <User className="w-4 h-4 mr-2" />
                                 View Profile
                               </Button>
