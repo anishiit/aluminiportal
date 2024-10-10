@@ -14,6 +14,7 @@ import axios from 'axios'
 import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
 import { getUserChatsUrl, getChatByIdUrl, chat_backend_url } from '@/urls/urls.js'
+import Navbar2 from '@/components/header/Navbar2'
 
 // Socket io connection => 
 
@@ -348,7 +349,8 @@ export default function WhatsAppClone() {
 
 
   return (
-
+<div>
+<Navbar2/>
     <div className="flex h-screen bg-background overflow-x-clip">
       <div className="w-full md:w-96 flex flex-col border-r">
         <div className="flex justify-between items-center p-4 bg-primary text-primary-foreground">
@@ -476,6 +478,6 @@ export default function WhatsAppClone() {
           <ChatView chat={selectedChat} onBack={handleBackClick} />
         </div>
       )}
-    </div>
+    </div></div>
   )
 }

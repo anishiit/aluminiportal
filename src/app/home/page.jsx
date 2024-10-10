@@ -10,53 +10,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import Navbar2 from "@/components/header/Navbar2"
 
 export default function AlumniHome() {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const navItems = [
-    { name: "Messages", href: "#messages", icon: <Mail className="h-4 w-4 mr-2" /> },
-    { name: "Events", href: "#events", icon: <Calendar className="h-4 w-4 mr-2" /> },
-    { name: "Alumni", href: "#alumni", icon: <Users className="h-4 w-4 mr-2" /> },
-    { name: "Get Involved", href: "#get-involved", icon: <Bell className="h-4 w-4 mr-2" /> },
-    { name: "Profile", href: "#profile", icon: <User className="h-4 w-4 mr-2" /> },
-    { name: "Post Job", href: "/postjob",  external: true , icon: <Briefcase className="h-4 w-4 mr-2" /> },
-    { name: "Search Job", href: "/jobposts", external: true , icon: <Search className="h-4 w-4 mr-2" /> },
-  ]
 
-  const scrollToSection = (href) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-    setIsOpen(false)
-  }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll("section")
-      const scrollPosition = window.scrollY + 100
-
-      sections.forEach((section) => {
-        if (section instanceof HTMLElement) {
-          const sectionTop = section.offsetTop
-          const sectionHeight = section.offsetHeight
-          const sectionId = section.getAttribute("id")
-
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            document.querySelector(`nav a[href="#${sectionId}"]`)?.classList.add("text-blue-600")
-          } else {
-            document.querySelector(`nav a[href="#${sectionId}"]`)?.classList.remove("text-blue-600")
-          }
-        }
-      })
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
 
 //geting user info 
@@ -88,106 +50,7 @@ const handleLogout =  (e) => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container flex h-16 items-center justify-between">
-          <Link href="#" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-blue-600" />
-            <span className="font-bold text-2xl text-black">{userData.collegeName}</span>
-          </Link>
-       
-          <nav className="hidden md:flex gap-6">
-    {navItems.map((item) => (
-      item.external ? (
-        // For external links, directly use the Link component without <a> tag
-        <Link key={item.name} href={item.href} className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center">
-          {item.icon}
-          {item.name}
-        </Link>
-      ) : (
-        // For internal scroll links, keep the original logic
-        <a
-          key={item.name}
-          href={item.href}
-          className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToSection(item.href);
-          }}
-        >
-          {item.icon}
-          {item.name}
-        </a>
-      )
-    ))}
-  </nav>
-
-          <div className="flex items-center gap-4">
-            {/* <Avatar>
-              <AvatarImage src="/image/profileLogo.png" alt="Alumnus" />
-              <AvatarFallback>RK</AvatarFallback>
-            </Avatar> */}
-            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-gray-600 hover:text-blue-600">
-              <LogOut className="h-5 w-5" />
-              <span className="sr-only">Log out</span>
-            </Button>
-          </div>
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-bold text-2xl text-black">Menu</span>
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="icon">
-                      {/* <X className="h-6 w-6" /> */}
-                    </Button>
-                  </SheetClose>
-                </div>
-                <nav className="flex flex-col gap-4">
-                  {navItems.map((item) => (
-                    item.external ?(
-                      <SheetClose asChild key={item.name}>
-                      <Link key={item.name} href={item.href} className="text-2xl font-semibold hover:text-blue-600 transition-colors flex items-center">
-                        {item.icon}
-                          {item.name}
-                        </Link> 
-                       </SheetClose>
-                    ):( 
-                       <SheetClose asChild key={item.name}>
-                    
-                      <a
-                        href={item.href}
-                        className="text-2xl font-semibold hover:text-blue-600 transition-colors flex items-center"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          scrollToSection(item.href)
-                        }}
-                      >
-                        {item.icon}
-                        {item.name}
-                      </a>
-                    </SheetClose>)
-                  
-                  ))}
-                </nav>
-                <div className="mt-auto">
-                  <SheetClose asChild>
-                    <Button size="lg" onClick={handleLogout} className="w-full" variant="outline">
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Log Out
-                    </Button>
-                  </SheetClose>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </header>
+    <Navbar2/>
       <main className="flex-1">
         <section id="dashboard" className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
           <div className="container px-4 md:px-6">
@@ -201,49 +64,7 @@ const handleLogout =  (e) => {
             </div>
           </div>
         </section>
-        <section id="messages" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Messages</h2>
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Recent Messages</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-center">
-                    <Avatar className="h-10 w-10 mr-4">
-                      <AvatarImage src="/image/profileLogo.png" alt="Prof. Sharma" />
-                      <AvatarFallback>PS</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">Prof. Sharma</p>
-                      <p className="text-sm text-gray-500">Re: Guest Lecture Invitation</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center">
-                    <Avatar className="h-10 w-10 mr-4">
-                      <AvatarImage src="/image/profileLogo.png" alt="Alumni Association" />
-                      <AvatarFallback>AA</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">Alumni Association</p>
-                      <p className="text-sm text-gray-500">Annual Meet Announcement</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center">
-                    <Avatar className="h-10 w-10 mr-4">
-                      <AvatarImage src="/image/profileLogo.png" alt="Placement Cell" />
-                      <AvatarFallback>PC</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">Placement Cell</p>
-                      <p className="text-sm text-gray-500">Job Opportunity for Alumni</p>
-                    </div>
-                  </li>
-                </ul>
-                <Button className="mt-6 w-full">View All Messages</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+    
         <section id="events" className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Upcoming Events</h2>
