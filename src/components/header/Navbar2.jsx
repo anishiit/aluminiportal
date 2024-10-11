@@ -150,7 +150,7 @@ function Navbar2() {
                 <span className="font-bold text-2xl text-black">Menu</span>
                 <SheetClose asChild>
                   <Button variant="ghost" size="icon">
-                    <X className="h-6 w-6" />
+                 
                   </Button>
                 </SheetClose>
               </div>
