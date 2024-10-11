@@ -144,7 +144,8 @@ export default function ProfileDisplay({ user }) {
           </div>
           <div className="text-white text-center sm:text-left sm:pl-36 lg:pl-40">
             <h1 className="text-2xl sm:text-3xl font-bold">{usr?.name}</h1>
-            <p className="text-sm sm:text-base mt-1">{profile.currentPosition} at {profile.company}</p>
+            <p className="text-sm sm:text-base mt-1">{usr?.jobTitle
+            } at {usr?.companyName}</p>
           </div>
         </div>
         <CardContent className="pt-16 pb-6 px-4 sm:px-6 lg:px-8">
@@ -189,9 +190,9 @@ export default function ProfileDisplay({ user }) {
                   <h3 className="text-base sm:text-lg font-semibold mb-2">Contact Information</h3>
                   <div className="grid gap-2 text-xs sm:text-sm">
                     {[
-                      { icon: Mail, text: profile.email },
-                      { icon: Phone, text: profile.phone },
-                      { icon: MapPin, text: profile.location },
+                      { icon: Mail, text: usr?.email },
+                      { icon: Phone, text: usr?.contactNumber },
+                      { icon: MapPin, text: usr?.location },
                       { icon: Linkedin, text: "LinkedIn Profile", link: profile.linkedin },
                       { icon: Github, text: "GitHub Profile", link: profile.github },
                     ].map((item, index) => (
