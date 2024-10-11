@@ -358,7 +358,7 @@ export default function ProfileForm() {
                       onChange={(e) => setInputs(prev => ({ ...prev, skills: e.target.value.split(',').map(skill => skill.trim()) }))}
                     />
                     <p className="mt-2 text-sm text-gray-500">
-                      Enter your skills separated by commas (e.g., "Machine Learning, Cloud Computing, Data Science")
+                      Enter your skills separated by commas (e.g., Machine Learning, Cloud Computing, Data Science)
                     </p>
                   </div>
                 </div>
