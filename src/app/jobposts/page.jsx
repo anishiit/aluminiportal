@@ -175,13 +175,13 @@ export default function SearchJob() {
                   </div>
                   <div className="lg:w-2/3 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 ">
                       <Link href={`/profile/${job.postedBy}`}>
                         <Avatar className="w-10 h-10">
                           <AvatarImage src={job.postedByAvatar} alt={job.postedBy} />
-                          <AvatarFallback>{job.postedBy[0]}</AvatarFallback>
+                          <AvatarFallback>{job?.postedByName[0]}</AvatarFallback>
                         </Avatar>
-                        <div>
+                        <div className="text-blue-700">
                           <p className="font-semibold">{job?.postedByName}</p>
                           <p className="text-sm text-gray-500">{job.company}</p>
                         </div>

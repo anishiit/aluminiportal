@@ -149,9 +149,10 @@ export default function ProfileDisplay({ user }) {
         </div>
         <CardContent className="pt-16 pb-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-end mb-6">
-            <Button onClick={() => router.push('/update-profile')} variant="outline" size="sm" className="mr-2 text-xs sm:text-sm">
+          {iscurrent === true ? ( <Button onClick={() => router.push('/update-profile')} variant="outline" size="sm" className="mr-2 text-xs sm:text-sm">
               Edit Profile
-            </Button>
+            </Button>):(<></>)}
+           
            { iscurrent === true ? (<Button onClick={() => router.push('/donation')} variant="outline" size="sm" className="mr-2 text-xs sm:text-sm">
               Donate
             </Button>):(<Button size="sm" onClick={handleConnect} className="text-xs sm:text-sm">
