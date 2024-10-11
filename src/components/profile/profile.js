@@ -139,7 +139,7 @@ export default function ProfileDisplay({ user }) {
           <div className="absolute -bottom-12 left-0 w-full flex justify-center sm:justify-start sm:left-6 lg:left-8">
             <Avatar className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-white">
               {/* <AvatarImage src="/image/profileLogo.png" alt={profile.fullName} /> */}
-              <AvatarFallback>{usr?.name[0]||profile.fullName.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+              <AvatarFallback>{usr.name?.split(" ").map(n => n[0]).join("")}</AvatarFallback>
             </Avatar>
           </div>
           <div className="text-white text-center sm:text-left sm:pl-36 lg:pl-40">
