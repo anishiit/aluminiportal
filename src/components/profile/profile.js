@@ -85,8 +85,8 @@ export default function ProfileDisplay({ user }) {
     getUser();
   },[])
   const profile = {
-    fullName: "Rahul Kumar",
-    email: "rahul.kumar@example.com",
+    fullName: "example",
+    email: "example@example.com",
     graduationYear: "2015",
     degree: "B.Tech in Computer Science and Engineering",
     currentPosition: "Senior Software Engineer",
@@ -138,14 +138,14 @@ export default function ProfileDisplay({ user }) {
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 pt-20 pb-16 px-4 sm:pt-24 sm:pb-32 sm:px-6 lg:px-8">
           <div className="absolute -bottom-12 left-0 w-full flex justify-center sm:justify-start sm:left-6 lg:left-8">
             <Avatar className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-white">
-              <AvatarImage src="/image/profileLogo.png" alt={profile.fullName} />
-              <AvatarFallback>{profile.fullName.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+              {/* <AvatarImage src="/image/profileLogo.png" alt={profile.fullName} /> */}
+              <AvatarFallback>{usr?.name[0]||profile.fullName.split(" ").map(n => n[0]).join("")}</AvatarFallback>
             </Avatar>
           </div>
           <div className="text-white text-center sm:text-left sm:pl-36 lg:pl-40">
-            <h1 className="text-2xl sm:text-3xl font-bold">{usr?.name}</h1>
-            <p className="text-sm sm:text-base mt-1">{usr?.jobTitle
-            } at {usr?.companyName}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold">{usr?.name ||profile.fullName }</h1>
+            <p className="text-sm sm:text-base mt-1">{usr?.jobTitle ||profile.currentPosition
+            } at {usr?.companyName ||profile.company}</p>
           </div>
         </div>
         <CardContent className="pt-16 pb-6 px-4 sm:px-6 lg:px-8">
@@ -190,9 +190,9 @@ export default function ProfileDisplay({ user }) {
                   <h3 className="text-base sm:text-lg font-semibold mb-2">Contact Information</h3>
                   <div className="grid gap-2 text-xs sm:text-sm">
                     {[
-                      { icon: Mail, text: usr?.email },
-                      { icon: Phone, text: usr?.contactNumber },
-                      { icon: MapPin, text: usr?.location },
+                      { icon: Mail, text: usr?.email ||profile.email },
+                      { icon: Phone, text: usr?.contactNumber ||profile.phone},
+                      { icon: MapPin, text: usr?.location ||profile.location},
                       { icon: Linkedin, text: "LinkedIn Profile", link: profile.linkedin },
                       { icon: Github, text: "GitHub Profile", link: profile.github },
                     ].map((item, index) => (
