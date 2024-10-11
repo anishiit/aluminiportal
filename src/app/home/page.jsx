@@ -137,50 +137,7 @@ const handleLogout =  (e) => {
             </div>
           </div>
         </section>
-        <section id="profile" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Your Profile</h2>
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4 mb-6">
-                  <Avatar className="h-20 w-20">
-                    <AvatarImage src="/image/profileLogo.png" alt="Rahul Kumar" />
-                    <AvatarFallback>RK</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-2xl font-semibold">Rahul Kumar</h3>
-                    <p className="text-gray-500">Class of 2015</p>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <p className="font-medium">Email:</p>
-                    <p>rahul.kumar@example.com</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Degree:</p>
-                    <p>B.Tech in Computer Science and Engineering</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Current Position:</p>
-                    <p>Senior Software Engineer at Tech Solutions Inc.</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Location:</p>
-                    <p>Bangalore, India</p>
-                  </div>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <Badge>Machine Learning</Badge>
-                  <Badge>Cloud Computing</Badge>
-                  <Badge>Data Science</Badge>
-                  <Badge>Blockchain</Badge>
-                </div>
-                <Button className="mt-6">Edit Profile</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+      
       </main>
       <footer className="w-full border-t bg-white py-6">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 px-4 md:px-6">
@@ -210,13 +167,25 @@ function EventCard({ title, date, description, image }) {
         <h3 className="text-2xl font-semibold mb-2">{title}</h3>
         <p className="text-sm text-gray-500 mb-4">{date}</p>
         <p className="text-gray-600 mb-4">{description}</p>
-        <Button variant="outline">Learn More</Button>
+        {/* <Button variant="outline">Learn More</Button> */}
       </CardContent>
     </Card>
   )
 }
 
 function AlumniCard({ name, class: classYear, position, image }) {
+  const router = useRouter()
+  const [userData, setUserData] = useState({ collegeName: '', name: '' });
+useEffect(()=>{
+  const user = JSON.parse(localStorage.getItem('user-threads'));
+  if(user){
+    const {collegeName ,name} = user;
+
+    setUserData({collegeName , name});
+  }
+
+},[])
+
   return (
     <Card className="flex flex-col items-center text-center p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
       <Avatar className="h-24 w-24 mb-4">
@@ -226,7 +195,7 @@ function AlumniCard({ name, class: classYear, position, image }) {
       <h3 className="text-xl font-semibold mb-1">{name}</h3>
       <p className="text-sm text-gray-500 mb-1">Class of {classYear}</p>
       <p className="text-sm text-gray-600 mb-4">{position}</p>
-      <Button variant="outline">View Profile</Button>
+      <Button onClick={() => { router.push(`/profile/${userData._id}`) }}  variant="outline">View Profile</Button>
     </Card>
   )
 }
