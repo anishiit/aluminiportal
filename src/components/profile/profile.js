@@ -12,7 +12,7 @@ import { Calendar, Github, GraduationCap, Linkedin, Mail, MapPin, Phone, User, B
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import { createUserInvitationUrl, getUserInfoUrl } from '@/urls/urls';
-
+import { getAllCollegeUsersUrl, connectUsersUrl, createChatOfUsers } from "@/urls/urls.js"
 import { useRouter } from 'next/navigation'
 import Navbar2 from "../header/Navbar2"
 
@@ -24,32 +24,34 @@ export default function ProfileDisplay({ user }) {
   const [isConnected, setIsConnected] = useState(user.isFollowing);
 
   const location = usePathname(); 
+
   const userId = location.substring(9);
+  const [users ,setUsers]= useState([]);
   const [usr, setUsr] = useState({});
   const [err, setErr] = useState("");
-  const [iscurrent, setcurrent] = useState(undefined);
+  const [iscurrent, setcurrent] = useState('');
    
     // Logic to handle follow request
-    const handleConnect = async () => {
-      let user;
-      if(typeof window !== undefined)
-        user = JSON.parse(localStorage.getItem("user-threads"))
-      // if(userId === user._id){
-      //   setcurrent(true);
-      // }
-      setIsConnected(!isConnected);
-        await axios.post(createUserInvitationUrl , {
-          toUserId:usr._id,
-          fromUserId:user._id,
-        })
-        .then((res) => {
-          console.log(res.data);
+    // const handleConnect = async () => {
+    //   let user;
+    //   if(typeof window !== undefined)
+    //     user = JSON.parse(localStorage.getItem("user-threads"))
+    //   // if(userId === user._id){
+    //   //   setcurrent(true);
+    //   // }
+    //   setIsConnected(!isConnected);
+    //     await axios.post(createUserInvitationUrl , {
+    //       toUserId:usr._id,
+    //       fromUserId:user._id,
+    //     })
+    //     .then((res) => {
+    //       console.log(res.data);
 
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    };
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     })
+    // };
 
     async function getUser(){
       try {
@@ -67,6 +69,54 @@ export default function ProfileDisplay({ user }) {
       }
     }
 
+    async function getAllCollegeUsers({ collegeName }) {
+      
+      try {
+        
+        if (typeof window !== "undefined") {
+          user= JSON.parse(localStorage.getItem("user-threads"))
+          setcurrent(user);
+        }
+  
+        const res = await axios.post(getAllCollegeUsersUrl, { collegeName: collegeName })
+        console.log(res.data)
+        const allUsers = res.data.users
+        const formattedUsers = allUsers.map((user) => ({
+          ...user,
+          isConnected: user.connectedUsers?.includes(String(iscurrent._id)) || false,
+          batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
+          branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
+        }))
+        setUsers(formattedUsers)
+      
+       
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  
+  
+    const handleConnect = async (id) => {
+      setUsers(users.map(user => 
+        user._id === id ? { ...user, isConnected: !user.isConnected } : user
+      ))
+      try {
+        await axios.post(connectUsersUrl, { userId1: iscurrent?._id, userId2: id })
+        await axios.post(createChatOfUsers, { userId1: iscurrent?._id, userId2: id })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const currUser = JSON.parse(localStorage.getItem("user-threads"))
+       
+        if (currUser) {
+          getAllCollegeUsers({ collegeName: currUser.collegeName })
+        }
+      }
+    }, [])
   const handleMessage = () => {
     // Logic to open a messaging interface
   };
@@ -156,15 +206,15 @@ export default function ProfileDisplay({ user }) {
            
            { iscurrent === true ? (<Button onClick={() => router.push('/donation')} variant="outline" size="sm" className="mr-2 text-xs sm:text-sm">
               Donate
-            </Button>):(<Button size="sm" onClick={handleConnect} className="text-xs sm:text-sm">
-              {isConnected ? (
-                <Link href='/chat'>
-                  <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            </Button>):(<Button size="lg"  className="text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex ">
+              {/* {usr.connectedUsers?.includes(String(iscurrent._id)) ? (
+                <Link href='/chat'  className="flex">
+                  <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 " />
                   Message
                 </Link>
               ) : (
                 'Connect'
-              )}
+              )} */}Share
             </Button>)}
             
           </div>

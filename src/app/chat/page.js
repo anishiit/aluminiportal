@@ -116,7 +116,7 @@ const handleSendMessage = async (e) => {
 };
 
 return (
-  <div className="flex flex-col h-full">
+  <div className="flex flex-col h-full pt-16 sm:pt-0">
     <div className="flex items-center space-x-4 p-4 bg-primary text-primary-foreground">
       <Button variant="ghost" size="icon" onClick={onBack}>
         <ArrowLeft className="h-6 w-6" />
@@ -355,14 +355,14 @@ export default function WhatsAppClone() {
   return (
 <div>
 <Navbar2/>
-    <div className="flex h-screen bg-background overflow-x-clip">
+    <div className="flex h-screen bg-background overflow-x-clip ">
       <div className="w-full md:w-96 flex flex-col border-r">
         <div className="flex justify-between items-center p-4 bg-primary text-primary-foreground">
           <h1 className="text-xl font-bold">Chat</h1>
           {loading === true ? (<></>):(<p>Messages are Loading...</p>)}
           {/* Add group button with dialog  */}
           <Dialog>
-            <DialogTrigger className='bg-white' asChild>
+            <DialogTrigger className='bg-white-300' asChild>
               <Button variant="outline">
                 <Users className="h-5 w-5" />
                 <span className="sr-only">New Group</span>

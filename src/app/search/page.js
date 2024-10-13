@@ -187,7 +187,7 @@ export default function UserConnectionPage() {
                               </Avatar>
                             </div>
                             <h3 className="text-xl font-semibold text-center mb-2">{user.name}</h3>
-                            <p className="text-sm text-muted-foreground text-center mb-4">{user.position || "Position not specified"}</p>
+                            <p className="text-sm text-muted-foreground text-center mb-4">{user.jobTitle || "Position not specified"}</p>
                             <div className="space-y-2 text-sm flex-grow">
                               <div className="flex items-center justify-center">
                                 <GraduationCap className="w-4 h-4 mr-2 text-muted-foreground" />
