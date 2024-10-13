@@ -25,11 +25,14 @@ export default function UserConnectionPage() {
   const [activeTab, setActiveTab] = useState("all")
   const [selectedBatch, setSelectedBatch] = useState("All")
   const [selectedBranch, setSelectedBranch] = useState("All")
-
-  const batches = ["All", "2015", "2016", "2017", "2018"]
+  const [loading , setLoading] =useState(false);
+  const [noAlumni , setNoAlumni] = useState(true);
+  const batches = ["All", "2015", "2016", "2017", "2018",]
   const branches = ["All", "Computer Science", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering"]
-  const router = useRouter()
+  const router = useRouter() 
+
   async function getAllCollegeUsers({ collegeName }) {
+    setLoading(true)
     try {
       let currUser = {}
       if (typeof window !== "undefined") {
@@ -46,10 +49,13 @@ export default function UserConnectionPage() {
         branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
       }))
       setUsers(formattedUsers)
+      setLoading(false)
+      setNoAlumni(false)
     } catch (error) {
       console.error(error)
     }
   }
+
 
   const handleConnect = async (id) => {
     setUsers(users.map(user => 
@@ -224,7 +230,8 @@ export default function UserConnectionPage() {
                 </motion.div>
               ))}
             </AnimatePresence>
-            {filteredUsers.length === 0 && (
+            {loading === true ? (  <p className="text-center text-muted-foreground">Just a moment, preparing alumni information...</p>):(<></>)}
+            { loading === false && noAlumni===false && filteredUsers.length === 0 && (
               <p className="text-center text-muted-foreground">No alumni found matching your criteria.</p>
             )}
           </div>
