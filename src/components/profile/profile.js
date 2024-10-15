@@ -57,7 +57,7 @@ export default function ProfileDisplay({ user }) {
       try {
         await axios.post(getUserInfoUrl,{userId:userId})
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           setUsr(res.data.user);
         })
         .catch((err) => {

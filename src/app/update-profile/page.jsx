@@ -100,6 +100,7 @@ export default function ProfileForm() {
       if (typeof window !== 'undefined') {
         localStorage.setItem("user-threads", JSON.stringify(response.data.user))
       }
+      console.log(response.data.user)
       fetchUser()
     } catch (error) {
       console.error(error)

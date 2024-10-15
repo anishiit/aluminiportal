@@ -11,6 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, Search, UserPlus, UserCheck, GraduationCap, Briefcase, MapPin ,User} from "lucide-react"
 import Link from "next/link"
 import axios from "axios"
+import { batch } from '@/data/batch'
+import { branch } from '@/data/branch'
 import { getAllCollegeUsersUrl, connectUsersUrl, createChatOfUsers } from "@/urls/urls.js"
 import Navbar2 from "@/components/header/Navbar2"
 
@@ -123,26 +125,31 @@ export default function UserConnectionPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+              <Select value={selectedBatch !== "All" ? selectedBatch : ""} onValueChange={setSelectedBatch}>
                 <SelectTrigger className="w-full sm:w-[180px] rounded-full shadow-md">
-                  <SelectValue placeholder="Select Batch" />
+                <SelectValue placeholder="Select Batch">
+      {selectedBatch === "All" ? "Select Batch" : selectedBatch}
+    </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  {batches.map((batch) => (
+                  {batch.map((batch) => (
                     <SelectItem key={batch} value={batch}>{batch}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={selectedBranch} onValueChange={setSelectedBranch}>
-                <SelectTrigger className="w-full sm:w-[180px] rounded-full shadow-md">
-                  <SelectValue placeholder="Select Branch" />
-                </SelectTrigger>
-                <SelectContent>
-                  {branches.map((branch) => (
-                    <SelectItem key={branch} value={branch}>{branch}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Select value={selectedBranch !== "All" ? selectedBranch : ""} onValueChange={setSelectedBranch}>
+  <SelectTrigger className="w-full sm:w-[180px] rounded-full shadow-md">
+    <SelectValue placeholder="Select Branch">
+      {selectedBranch === "All" ? "Select Branch" : selectedBranch}
+    </SelectValue>
+  </SelectTrigger>
+  <SelectContent>
+    {branch.map((branch) => (
+      <SelectItem key={branch} value={branch}>{branch}</SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+
             </div>
             
             <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
@@ -154,7 +161,7 @@ export default function UserConnectionPage() {
             </Tabs>
 
             <AnimatePresence>
-              {Object.entries(groupedUsers).map(([group, groupUsers]) => (
+              {Object.entries(groupedUsers).slice().reverse().map(([group, groupUsers]) => (
                 <motion.div
                   key={group}
                   initial={{ opacity: 0 }}
@@ -167,7 +174,7 @@ export default function UserConnectionPage() {
                   <motion.div 
                     className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8"
                   >
-                    {groupUsers.map((user) => (
+                    {groupUsers.slice().reverse().map((user) => (
                       <motion.div
                         key={user._id}
                         initial={{ opacity: 0, y: 20 }}
