@@ -211,6 +211,7 @@ export default function UserConnectionPage() {
                                 View Profile
                               </Button>
                               <Button
+                                disabled={user.isConnected}
                                 variant={user.isConnected ? "secondary" : "default"}
                                 size="sm"
                                 onClick={() => handleConnect(user._id)}
