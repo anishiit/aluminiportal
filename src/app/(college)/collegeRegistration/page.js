@@ -1,5 +1,4 @@
-"use client"
-
+'use client'
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { useForm } from "react-hook-form"
@@ -37,7 +36,14 @@ export default function CollegeRegistration() {
       router.push('/collegeDashboard')
     }, 2000)
   }
-
+  const [hydrated, setHydrated] = React.useState(false);
+  React.useEffect(() => {
+      setHydrated(true);
+  }, []);
+  if (!hydrated) {
+      // Returns null on first render, so the client and server match
+      return null;
+  }
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -102,9 +108,9 @@ export default function CollegeRegistration() {
             </h2>
             <div className="grid gap-6 lg:grid-cols-3">
               {[
-                { title: "Basic", price: "$99", description: "For small institutions", features: ["Up to 1,000 alumni", "Basic networking features", "Event management"] },
-                { title: "Standard", price: "$199", description: "For medium-sized institutions", features: ["Up to 5,000 alumni", "Advanced networking features", "Job board", "Mentorship program"] },
-                { title: "Premium", price: "$399", description: "For large institutions", features: ["Unlimited alumni", "All Standard features", "Custom branding", "API access", "Dedicated support"] },
+                { title: "Free", price: "INR 0", description: "For 45 days only", features: ["Up to 1,000 alumni", "Basic networking features", "Event management"] },
+                { title: "Standard", price: "INR 6,000", description: "For medium-sized institutions", features: ["Up to 5,000 alumni", "Advanced networking features", "Job board", "Mentorship program"] },
+                { title: "Premium", price: "INR 10,000", description: "For large institutions", features: ["Unlimited alumni", "All Standard features", "Custom branding",  "Dedicated support"] },
               ].map((plan, index) => (
                 <motion.div
                   key={index}
@@ -118,7 +124,7 @@ export default function CollegeRegistration() {
                       <CardDescription>{plan.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold mb-4">{plan.price}<span className="text-lg font-normal">/month</span></p>
+                      <p className="text-4xl font-bold mb-4">{plan.price}<span className="text-lg font-normal">/year</span></p>
                       <ul className="space-y-2">
                         {plan.features.map((feature, featureIndex) => (
                           <li key={featureIndex} className="flex items-center">
@@ -129,7 +135,7 @@ export default function CollegeRegistration() {
                       </ul>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full">Select {plan.title} Plan</Button>
+                      <Button className="w-full">{plan.title} Plan</Button>
                     </CardFooter>
                   </Card>
                 </motion.div>
@@ -181,7 +187,7 @@ export default function CollegeRegistration() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="basic">Basic</SelectItem>
+                            <SelectItem value="basic">Free</SelectItem>
                             <SelectItem value="standard">Standard</SelectItem>
                             <SelectItem value="premium">Premium</SelectItem>
                           </SelectContent>
