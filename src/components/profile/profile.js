@@ -31,92 +31,71 @@ export default function ProfileDisplay({ user }) {
   const [err, setErr] = useState("");
   const [iscurrent, setcurrent] = useState('');
    
-    // Logic to handle follow request
-    // const handleConnect = async () => {
-    //   let user;
-    //   if(typeof window !== undefined)
-    //     user = JSON.parse(localStorage.getItem("user-threads"))
-    //   // if(userId === user._id){
-    //   //   setcurrent(true);
-    //   // }
-    //   setIsConnected(!isConnected);
-    //     await axios.post(createUserInvitationUrl , {
-    //       toUserId:usr._id,
-    //       fromUserId:user._id,
-    //     })
-    //     .then((res) => {
-    //       console.log(res.data);
 
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     })
-    // };
-
-    async function getUser(){
-      try {
-        await axios.post(getUserInfoUrl,{userId:userId})
-        .then((res) => {
-          console.log(res.data);
-          setUsr(res.data.user);
-        })
-        .catch((err) => {
-          console.log(err);
-          setErr(err.response.data.msg);
-        })
-      } catch (error) {
-        console.log(error)
-      }
+  async function getUser(){
+    try {
+      await axios.post(getUserInfoUrl,{userId:userId})
+      .then((res) => {
+        // console.log(res.data);
+        setUsr(res.data.user);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErr(err.response.data.msg);
+      })
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-    async function getAllCollegeUsers({ collegeName }) {
+  async function getAllCollegeUsers({ collegeName }) {
+    
+    try {
       
-      try {
-        
-        if (typeof window !== "undefined") {
-          user= JSON.parse(localStorage.getItem("user-threads"))
-          setcurrent(user);
-        }
-  
-        const res = await axios.post(getAllCollegeUsersUrl, { collegeName: collegeName })
-        console.log(res.data)
-        const allUsers = res.data.users
-        const formattedUsers = allUsers.map((user) => ({
-          ...user,
-          isConnected: user.connectedUsers?.includes(String(iscurrent._id)) || false,
-          batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
-          branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
-        }))
-        setUsers(formattedUsers)
-      
-       
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  
-  
-    const handleConnect = async (id) => {
-      setUsers(users.map(user => 
-        user._id === id ? { ...user, isConnected: !user.isConnected } : user
-      ))
-      try {
-        await axios.post(connectUsersUrl, { userId1: iscurrent?._id, userId2: id })
-        await axios.post(createChatOfUsers, { userId1: iscurrent?._id, userId2: id })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  
-    useEffect(() => {
       if (typeof window !== "undefined") {
-        const currUser = JSON.parse(localStorage.getItem("user-threads"))
-       
-        if (currUser) {
-          getAllCollegeUsers({ collegeName: currUser.collegeName })
-        }
+        user= JSON.parse(localStorage.getItem("user-threads"))
+        setcurrent(user);
       }
-    }, [])
+
+      const res = await axios.post(getAllCollegeUsersUrl, { collegeName: collegeName })
+      // console.log(res.data)
+      const allUsers = res.data.users
+      const formattedUsers = allUsers.map((user) => ({
+        ...user,
+        isConnected: user.connectedUsers?.includes(String(iscurrent._id)) || false,
+        batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
+        branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
+      }))
+      setUsers(formattedUsers)
+    
+     
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
+  
+  const handleConnect = async (id) => {
+    setUsers(users.map(user => 
+      user._id === id ? { ...user, isConnected: !user.isConnected } : user
+    ))
+    try {
+      await axios.post(connectUsersUrl, { userId1: iscurrent?._id, userId2: id })
+      await axios.post(createChatOfUsers, { userId1: iscurrent?._id, userId2: id })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const currUser = JSON.parse(localStorage.getItem("user-threads"))
+     
+      if (currUser) {
+        getAllCollegeUsers({ collegeName: currUser.collegeName })
+      }
+    }
+  }, [])
   const handleMessage = () => {
     // Logic to open a messaging interface
   };
@@ -135,14 +114,15 @@ export default function ProfileDisplay({ user }) {
     getUser();
   },[])
   const profile = {
-    fullName: "example",
+    name: "example",
     email: "example@example.com",
     graduationYear: "2015",
     degree: "B.Tech in Computer Science and Engineering",
     currentPosition: "Senior Software Engineer",
-    company: "Tech Solutions Inc.",
+    companyName: "Tech Solutions Inc.",
+    jobTitle:"Software Engineer",
     location: "Bangalore, India",
-    phone: "+91 9876543210",
+    contactNumber: "+91 0000000000",
     linkedin: "https://www.linkedin.com/in/rahulkumar",
     github: "https://github.com/rahulkumar",
     bio: "Passionate about leveraging technology to solve real-world problems. Experienced in machine learning and cloud computing.",
@@ -193,9 +173,8 @@ export default function ProfileDisplay({ user }) {
             </Avatar>
           </div>
           <div className="text-white text-center sm:text-left sm:pl-36 lg:pl-40">
-            <h1 className="text-2xl sm:text-3xl font-bold">{usr?.name ||profile.fullName }</h1>
-            <p className="text-sm sm:text-base mt-1">{usr?.jobTitle ||profile.currentPosition
-            } at {usr?.companyName ||profile.company}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold">{usr?.name }</h1>
+            <p className="text-sm sm:text-base mt-1">{usr?.jobTitle} at {usr?.companyName}</p>
           </div>
         </div>
         <CardContent className="pt-16 pb-6 px-4 sm:px-6 lg:px-8">
@@ -230,21 +209,22 @@ export default function ProfileDisplay({ user }) {
                 </TabsTrigger>
               ))}
             </TabsList>
+            {/* About Section  */}
             <TabsContent value="about" className="mt-4 sm:mt-6">
               <div className="space-y-4 sm:space-y-6">
                 <div>
                   <h3 className="text-base sm:text-lg font-semibold mb-2">About</h3>
-                  <p className="text-xs sm:text-sm">{profile.bio}</p>
+                  <p className="text-xs sm:text-sm">{usr.bio}</p>
                 </div>
                 <div>
                   <h3 className="text-base sm:text-lg font-semibold mb-2">Contact Information</h3>
                   <div className="grid gap-2 text-xs sm:text-sm">
                     {[
-                      { icon: Mail, text: usr?.email ||profile.email },
-                      { icon: Phone, text: usr?.contactNumber ||profile.phone},
+                      { icon: Mail, text: usr?.email },
+                      { icon: Phone, text: usr?.contactNumber },
                       { icon: MapPin, text: usr?.location ||profile.location},
-                      { icon: Linkedin, text: "LinkedIn Profile", link: profile.linkedin },
-                      { icon: Github, text: "GitHub Profile", link: profile.github },
+                      { icon: Linkedin, text: "LinkedIn Profile", link: usr.linkedin || "" },
+                      { icon: Github, text: "GitHub Profile", link: usr.github || "" },
                     ].map((item, index) => (
                       <div key={index} className="flex items-center">
                         <item.icon className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-muted-foreground" />
@@ -261,18 +241,29 @@ export default function ProfileDisplay({ user }) {
                 </div>
                 <div>
                   <h3 className="text-base sm:text-lg font-semibold mb-2">Skills</h3>
-                  <div className="flex flex-wrap gap-1 sm:gap-2">
-                    {profile.skills.map((skill, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
+                  
+                    {usr.skills?.length === 0 ? (
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
+                        <h3 className="text-sm">Add Skills to see</h3>
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
+                      {usr?.skills?.map((skill, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {skill}
+                        </Badge>
+                      ))}
+                      </div>
+                    )}
                 </div>
               </div>
             </TabsContent>
+            {/* Experience Section  */}
             <TabsContent value="experience" className="mt-4 sm:mt-6">
               <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Work Experience</h3>
+              {
+
+              }
               <div className="space-y-3 sm:space-y-4">
                 {profile.experience.map((exp, index) => (
                   <Card key={index}>
@@ -284,10 +275,17 @@ export default function ProfileDisplay({ user }) {
                 ))}
               </div>
             </TabsContent>
+            {/* Education Section  */}
             <TabsContent value="education" className="mt-4 sm:mt-6">
               <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Education</h3>
               <div className="space-y-3 sm:space-y-4">
-                {profile.education.map((edu, index) => (
+                <Card >
+                  <CardHeader className="p-3 sm:p-4">
+                    <CardTitle className="text-sm sm:text-base">{usr?.branch}</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">{usr?.collegeName} • {usr?.batch}</CardDescription>
+                  </CardHeader>
+                </Card>
+                {usr?.education?.map((edu, index) => (
                   <Card key={index}>
                     <CardHeader className="p-3 sm:p-4">
                       <CardTitle className="text-sm sm:text-base">{edu.degree}</CardTitle>
@@ -297,6 +295,7 @@ export default function ProfileDisplay({ user }) {
                 ))}
               </div>
             </TabsContent>
+            {/* Project Section  */}
             <TabsContent value="projects" className="mt-4 sm:mt-6">
               <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Projects</h3>
               <div className="grid gap-3 sm:gap-4">
