@@ -1,15 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowRight, User, Mail, Briefcase, Building, MapPin, Phone, Linkedin, Github } from "lucide-react"
+import { Plus,ArrowRight, User, Mail, Briefcase, Building, MapPin, Phone, Linkedin, Github, X } from "lucide-react"
 import axios from 'axios'
 import Link from 'next/link'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -43,6 +44,13 @@ export default function ProfileForm() {
     skills: []
   })
   const [hasMounted, setHasMounted] = useState(false);
+  const [newExperience, setNewExperience] = useState({
+    company: '',
+    position: '',
+    startDate: '',
+    endDate: '',
+    description: ''
+  })
 
   useEffect(() => {
     setHasMounted(true);
@@ -72,7 +80,8 @@ export default function ProfileForm() {
           linkedin: userData.linkedin || "",
           github: userData.github || "",
           bio: userData.bio || "",
-          skills: userData.skills || []
+          skills: userData.skills || [],
+          experiences: userData.experiences || []
         })
       }
     }
@@ -85,6 +94,21 @@ export default function ProfileForm() {
       ...prevInputs,
       [name]: value
     }))
+  }
+
+  const handleExperienceChange = (e) => {
+    const { name, value } = e.target
+    setNewExperience(prev => ({ ...prev, [name]: value }))
+  }
+  const addExperience = () => {
+    setInputs((prev) => ({...prev,experiences:[...prev.experiences,newExperience]}))
+    setNewExperience({
+      company: '',
+      position: '',
+      startDate: '',
+      endDate: '',
+      description: ''
+    })
   }
 
   async function handleSubmit(e) {
@@ -118,31 +142,32 @@ export default function ProfileForm() {
 
   return (
     <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-4xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl sm:text-3xl font-bold">Edit Your Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="w-full max-w-4xl mx-auto ">
+        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-10 md:py-16 sm:px-6 lg:px-8 mb-10 rounded-t-lg">
+          <h1 className="text-2xl sm:text-3xl font-bold pb-5 text-white" >Edit Profile</h1>
           <div className="mb-6 flex justify-center">
             <Avatar className="w-24 h-24">
               <AvatarImage src={user?.avatarUrl} alt={user?.name || 'User'} />
               <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
             </Avatar>
           </div>
-          <p className="mt-2 text-center text-sm text-gray-600 mb-6">
+          <p className="mt-2 text-center text-sm text-white mb-6">
             Update your profile information{' '}
             <Link
               href={`/profile/${user?._id}`}
-              className="font-semibold text-primary transition-all duration-200 hover:underline"
+              className="font-semibold text-black transition-all duration-200 hover:underline"
             >
               Go to Profile
             </Link>
           </p>
+        </div>
+        <CardContent>
           <Tabs defaultValue="personal" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="personal">Personal Info</TabsTrigger>
-              <TabsTrigger value="professional">Professional Info</TabsTrigger>
-              <TabsTrigger value="social">Social & Skills</TabsTrigger>
+            <TabsList className=" w-full flex flex-row mb-6 justify-evenly">
+              <TabsTrigger className="flex-grow sm:flex-grow-0 text-xs sm:text-sm py-2 px-[2px] md:px-10 m-0.5 sm:m-1 rounded-sm data-[state=active]:bg-blue-600 data-[state=active]:text-primary-foreground my-1" value="personal">Personal</TabsTrigger>
+              <TabsTrigger className="flex-grow sm:flex-grow-0 text-xs sm:text-sm py-2 px-[2px] md:px-10 m-0.5 sm:m-1 rounded-sm data-[state=active]:bg-blue-600 data-[state=active]:text-primary-foreground my-1" value="professional">Professional</TabsTrigger>
+              <TabsTrigger className="flex-grow sm:flex-grow-0 text-xs sm:text-sm py-2 px-[2px] md:px-10 m-0.5 sm:m-1 rounded-sm data-[state=active]:bg-blue-600 data-[state=active]:text-primary-foreground my-1" value="social">Social & Skills</TabsTrigger>
+              <TabsTrigger className="flex-grow sm:flex-grow-0 text-xs sm:text-sm py-2 px-[2px] md:px-10 m-0.5 sm:m-1 rounded-sm data-[state=active]:bg-blue-600 data-[state=active]:text-primary-foreground my-1" value="experience">Experience</TabsTrigger>
             </TabsList>
             <form onSubmit={handleSubmit} className="space-y-6">
               <TabsContent value="personal">
@@ -377,9 +402,72 @@ export default function ProfileForm() {
                   </div>
                 </div>
               </TabsContent>
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <TabsContent value="experience">
+                <div className="space-y-4">
+                  {inputs?.experiences?.map((exp, index) => (
+                    <Card key={index} className="relative">
+                      <CardHeader>
+                        <CardTitle>{exp.position} at {exp.company}</CardTitle>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="absolute top-2 right-2"
+                          onClick={() => removeExperience(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          {exp.startDate} - {exp.endDate || 'Present'}
+                        </p>
+                        <p className="mt-2">{exp.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Add New Experience</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="company">Company</Label>
+                            <Input id="company" name="company" value={newExperience.company} onChange={handleExperienceChange} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="position">Position</Label>
+                            <Input id="position" name="position" value={newExperience.position} onChange={handleExperienceChange} />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="startDate">Start Date</Label>
+                            <Input id="startDate" name="startDate" type="date" value={newExperience.startDate} onChange={handleExperienceChange} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="endDate">End Date</Label>
+                            <Input id="endDate" name="endDate" type="date" value={newExperience.endDate} onChange={handleExperienceChange} />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="description">Description</Label>
+                          <Textarea id="description" name="description" value={newExperience.description} onChange={handleExperienceChange} />
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button type="button" onClick={addExperience} className="w-full">
+                        <Plus className="mr-2 h-4 w-4" /> Add Experience
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </TabsContent>
+              <Button type="submit" disabled={isLoading} className="w-full bg-blue-600">
                 {isLoading ? (
-                  <>Updating... <ArrowRight className="ml-2 h-4 w-4 animate-spin" /></>
+                  <>Updating... <ArrowRight className="ml-2 h-4 w-4 animate-spin " /></>
                 ) : (
                   <>Update profile <ArrowRight className="ml-2 h-4 w-4" /></>
                 )}
