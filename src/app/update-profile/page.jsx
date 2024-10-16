@@ -42,6 +42,11 @@ export default function ProfileForm() {
     bio: "",
     skills: []
   })
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     fetchUser()
@@ -74,6 +79,7 @@ export default function ProfileForm() {
   }
 
   const handleChange = (e) => {
+    if (!hasMounted) return; // preventing function to trigger at the time of mounting as select field will initialize to empty string
     const { name, value } = e.target
     setInputs(prevInputs => ({
       ...prevInputs,
@@ -177,7 +183,11 @@ export default function ProfileForm() {
                   </div>
                   <div>
                     <label htmlFor="collegeName" className="block text-sm font-medium text-gray-700">College Name</label>
-                    <Select name="collegeName" value={inputs.collegeName} onValueChange={(value) => handleChange({ target: { name: 'collegeName', value } })}>
+                    <Select 
+                      name="collegeName" 
+                      value={inputs.collegeName} 
+                      onValueChange={(value) => handleChange({ target: { name: 'collegeName', value } })}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select College" />
                       </SelectTrigger>
