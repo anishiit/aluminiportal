@@ -17,9 +17,12 @@ function Page() {
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
-      });
+    });
+    
+    const [isLoading , setLoading] = useState(false)
       
       const handleSignup = async (e) => {
+        setLoading(true)
         e.preventDefault();
         setError("")
         // console.log(inputs);
@@ -27,6 +30,7 @@ function Page() {
         // Check if any field is empty
         if ( !inputs.email || !inputs.password ) {
           setError("All fields are required!");
+          setLoading(false)
           return; // Exit the function if any field is empty
         }
       
@@ -46,10 +50,12 @@ function Page() {
           .catch((err) => {
             console.log(err);
             setError(err.response.data.msg);
+            setLoading(false)
           })
       
         } catch (error) {
           console.error(error);
+          setLoading(false)
         }
       };
       
@@ -76,7 +82,7 @@ function Page() {
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-          <div className="mb-2 flex justify-center">
+          {/* <div className="mb-2 flex justify-center">
             <svg
               width="50"
               height="56"
@@ -89,7 +95,7 @@ function Page() {
                 fill="black"
               />
             </svg>
-          </div>
+          </div> */}
           <h2 className="text-center text-2xl font-bold leading-tight text-black">
             Login to your account
           </h2>
@@ -141,12 +147,15 @@ function Page() {
               </div>
             
               <div>
-              <p className='text-red-500 text-center font-semibold text-lg my-1' >{error}</p>
+              <p className='text-red-500 text-center font-semibold text-base my-1' >{error}</p>
                 <button
+                  disabled={isLoading}
                   type="button"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                  onClick={handleSignup}>
-                  Get started <ArrowRight className="ml-2" size={16} />
+                  className="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-blue-600"
+                  onClick={handleSignup}
+                >
+                  {isLoading === false ? (<> Get started <ArrowRight className="ml-2" size={16} /> </>) : (<>Loging In..</>)}
+                 
                 </button>
               </div>
             </div>
