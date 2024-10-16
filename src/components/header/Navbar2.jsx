@@ -46,7 +46,7 @@ function Navbar2() {
 
   const navItems = [
     { name: "Messages", href: "/chat" , external: true, icon: <Mail className="h-4 w-4 mr-2" /> },
-    { name: "Events", href: "#events", icon: <Calendar className="h-4 w-4 mr-2" /> },
+    { name: "Events", href: "/event", external: true, icon: <Calendar className="h-4 w-4 mr-2" /> },
     { name: "Get Involved", href: "/getInvolved", external: true, icon: <Bell className="h-4 w-4 mr-2" /> },
     { name: "Reconnect", href: "/search", external: true, icon: <Users className="h-4 w-4 mr-2" /> },
     { name: "Post Job", href: "/postjob", external: true, icon: <Briefcase className="h-4 w-4 mr-2" /> },
