@@ -154,7 +154,7 @@ function Page() {
                   className="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-blue-600"
                   onClick={handleSignup}
                 >
-                  {isLoading === false ? (<> Get started <ArrowRight className="ml-2" size={16} /> </>) : (<>Loging In..</>)}
+                  {isLoading === false ? (<> Login <ArrowRight className="ml-2" size={16} /> </>) : (<>Loging In..</>)}
                  
                 </button>
               </div>
