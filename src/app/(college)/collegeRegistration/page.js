@@ -36,14 +36,7 @@ export default function CollegeRegistration() {
       router.push('/collegeDashboard')
     }, 2000)
   }
-  const [hydrated, setHydrated] = React.useState(false);
-  React.useEffect(() => {
-      setHydrated(true);
-  }, []);
-  if (!hydrated) {
-      // Returns null on first render, so the client and server match
-      return null;
-  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
