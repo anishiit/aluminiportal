@@ -244,7 +244,7 @@ export default function ProfileDisplay({ user }) {
                   
                     {usr.skills?.length === 0 ? (
                       <div className="flex flex-wrap gap-1 sm:gap-2">
-                        <h3 className="text-sm">Add Skills to see</h3>
+                        <h3 className="text-sm">No skills added to Show</h3>
                       </div>
                     ) : (
                       <div className="flex flex-wrap gap-1 sm:gap-2">
@@ -262,19 +262,24 @@ export default function ProfileDisplay({ user }) {
             <TabsContent value="experience" className="mt-4 sm:mt-6">
               <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Work Experience</h3>
               {
-
+                usr.experiences?.length !== 0 ? (
+                  <div className="space-y-3 sm:space-y-4">
+                    {usr?.experiences?.map((exp, index) => (
+                      <Card key={index}>
+                        <CardHeader className="p-3 sm:p-4">
+                          <CardTitle className="text-sm sm:text-base">{exp.position}</CardTitle>
+                          <CardDescription className="text-xs sm:text-sm">at {exp.company} • {exp.startDate} ~ {exp.endDate || "Present" }</CardDescription>
+                        </CardHeader>
+                        <CardContent className="text-[16px]" >{exp.description}</CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap gap-1 sm:gap-2">
+                        <h3 className="text-sm">No Experince added to Show</h3>
+                  </div>
+                )
               }
-              <div className="space-y-3 sm:space-y-4">
-                {usr?.experiences?.map((exp, index) => (
-                  <Card key={index}>
-                    <CardHeader className="p-3 sm:p-4">
-                      <CardTitle className="text-sm sm:text-base">{exp.position}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">at {exp.company} • {exp.startDate} ~ {exp.endDate || "Present" }</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-[16px]" >{exp.description}</CardContent>
-                  </Card>
-                ))}
-              </div>
             </TabsContent>
             {/* Education Section  */}
             <TabsContent value="education" className="mt-4 sm:mt-6">
