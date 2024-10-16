@@ -6,6 +6,7 @@ export const chat_backend_url = "https://alumni-portal-chatservice-backend.onren
 export const registerUserUrl = "https://alumni-portal-backend.vercel.app/user/register"
 export const loginUserUrl = "https://alumni-portal-backend.vercel.app/user/login"
 export const getUserInfoUrl = "https://alumni-portal-backend.vercel.app/user/getuser"
+export const updateUserProfileUrl = "https://alumni-portal-backend.vercel.app/user/updateprofile"
 
 export const getUserInvitationsUrl = "https://alumni-portal-backend.vercel.app/user/getinvitations"
 

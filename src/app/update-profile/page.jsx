@@ -13,6 +13,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
+// importing urls
+import { getUserInfoUrl, updateUserProfileUrl} from "@/urls/urls.js"
+
 // Import your data arrays here
 import { collegeName } from '@/data/college'
 import { stateName } from '@/data/state'
@@ -82,7 +85,7 @@ export default function ProfileForm() {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const response = await axios.post("https://alumini-portal-backend.onrender.com/user/updateprofile", inputs)
+      const response = await axios.post(updateUserProfileUrl, inputs)
       console.log(response.data)
       await getUser()
   
@@ -96,7 +99,7 @@ export default function ProfileForm() {
 
   async function getUser() {
     try {
-      const response = await axios.post("https://alumini-portal-backend.onrender.com/user/getuser", { userId: inputs.userId })
+      const response = await axios.post(getUserInfoUrl, { userId: inputs.userId })
       if (typeof window !== 'undefined') {
         localStorage.setItem("user-threads", JSON.stringify(response.data.user))
       }

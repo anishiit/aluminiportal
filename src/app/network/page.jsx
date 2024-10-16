@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React , { useState,useEffect} from 'react'
 import { getUserInvitationsUrl, getUserConnectionsUrl } from '@/urls/urls'
 import Navbar2 from '@/components/header/Navbar2'
-
+import {acceptUserInvitationUrl, cancleUserInvitationUrl, deleteUserConnectionUrl} from "@/urls/urls.js"
 
 
 
@@ -81,7 +81,7 @@ function Page() {
     if(typeof window !== undefined)
       user = JSON.parse(localStorage.getItem("user-threads"))
     
-    await axios.post("https://alumini-portal-backend.onrender.com/user/acceptinvitation" , {
+    await axios.post(acceptUserInvitationUrl, {
       userId1:user?._id , userId2:userIdInInvitations
     })
     .then((res) => {
@@ -98,7 +98,7 @@ function Page() {
     let user;
     if(typeof window !== undefined)
       user = JSON.parse(localStorage.getItem("user-threads"))
-    await axios.post("https://alumini-portal-backend.onrender.com/user/cancleinvitation" , {
+    await axios.post(cancleUserInvitationUrl , {
       userId1:user?._id,
       userId2:userIdFromInvitations,
     })
@@ -116,7 +116,7 @@ function Page() {
     let user;
     if(typeof window !== undefined)
       user = JSON.parse(localStorage.getItem("user-threads"))
-    await axios.post("https://alumini-portal-backend.onrender.com/user/deleteconnection" , {
+    await axios.post(deleteUserConnectionUrl , {
       userIdToRemove:userId,
       fromUserId:user._id,
     })
