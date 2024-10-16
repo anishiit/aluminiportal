@@ -265,12 +265,13 @@ export default function ProfileDisplay({ user }) {
 
               }
               <div className="space-y-3 sm:space-y-4">
-                {profile.experience.map((exp, index) => (
+                {usr?.experiences?.map((exp, index) => (
                   <Card key={index}>
                     <CardHeader className="p-3 sm:p-4">
                       <CardTitle className="text-sm sm:text-base">{exp.position}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">{exp.company} • {exp.duration}</CardDescription>
+                      <CardDescription className="text-xs sm:text-sm">at {exp.company} • {exp.startDate} ~ {exp.endDate || "Present" }</CardDescription>
                     </CardHeader>
+                    <CardContent className="text-[16px]" >{exp.description}</CardContent>
                   </Card>
                 ))}
               </div>
