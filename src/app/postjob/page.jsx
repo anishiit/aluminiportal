@@ -84,24 +84,18 @@ export default function ContactPageOne() {
       <Navbar2 />
       <div className="mx-auto max-w-7xl px-4">
         {/* Hero Map */}
-        <div className="flex flex-col space-y-8 pb-5 pt-10 md:pt-16 outline-none">
-          <div className="mx-auto max-w-max rounded-full border bg-gray-50 p-1 px-3">
-            <p className="text-center text-xs font-semibold leading-normal md:text-sm">
-              Share your Job Post
-            </p>
-          </div>
-        </div>
-        <div className="grid items-center justify-items-center mx-auto max-w-7xl py-12 md:py-14">
+      
+        <div className="grid items-center justify-items-center mx-auto max-w-7xl  py-auto pt-8 md:pt-8">
             {/* contact from */}
             <div className="flex w-full flex-col items-center justify-center">
               <div className="px-2 md:px-12">
-                <p className="text-2xl w-full font-bold text-gray-900 md:text-4xl">Post</p>
+                <p className="text-2xl w-full font-bold text-gray-900 md:text-4xl">Post Job/Internship</p>
                 {/* <p className="mt-4 text-lg text-gray-600">
                   Our friendly team would love to hear from you.
                 </p> */}
 
 
-                <form onSubmit={handleSubmit} className="mt-8 space-y-4  md:w-[500px] w-[350px]">
+                <form onSubmit={handleSubmit} className="mt-4 space-y-4  md:w-[500px] w-[350px]">
                   <div className="grid w-full items-center gap-1.5">
 
                     <p className='text-blue-700 text-center text-lg font-semibold '>{msg}</p>
@@ -213,7 +207,7 @@ export default function ContactPageOne() {
             </div>
         </div>
       </div>
-      <hr />
+ 
     </div>
   )
 }
