@@ -1,5 +1,5 @@
-
 "use client"
+
 import axios from "axios"
 import Link from "next/link"
 import { getAllPostsUrl } from "@/urls/urls"
@@ -21,71 +21,23 @@ export default function SearchJob() {
 
   const getJobPostUrl = getAllPostsUrl
   async function getPostData() {
-            try {
-                await axios.get(getJobPostUrl)
-                    .then((res) => {
-                        console.log(res.data.jobs)
-                        setJobs(res.data.jobs);
-                        if (typeof window !== "undefined") {
-                            window.localStorage.setItem("posts", JSON.stringify(res.data.jobs))
-                        }
-                    })
-            } catch (error) {
-                console.log(error);
-            }
-        }
+    try {
+      await axios.get(getJobPostUrl)
+        .then((res) => {
+          console.log(res.data.jobs)
+          setJobs(res.data.jobs);
+          if (typeof window !== "undefined") {
+            window.localStorage.setItem("posts", JSON.stringify(res.data.jobs))
+          }
+        })
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-            useEffect(() => {
-        getPostData();
-    }, [])
-
-//   useEffect(() => {
-//     const dummyJobs = [
-//       {
-//         id: 1,
-//         title: "Senior Software Engineer",
-//         company: "Tech Innovators",
-//         location: "San Francisco, CA",
-//         postedBy: "John Doe",
-//         postedByAvatar: "/placeholder.svg?height=100&width=100",
-//         companyLogo: "/placeholder.svg?height=400&width=400",
-//         description: "We are seeking a talented senior software engineer to lead our cutting-edge projects...",
-//         postedDate: "2023-06-15",
-//         likes: 245,
-//         comments: 37,
-//         type: "job",
-//       },
-//       {
-//         id: 2,
-//         title: "Data Science Intern",
-//         company: "Data Dynamics",
-//         location: "New York, NY",
-//         postedBy: "Jane Smith",
-//         postedByAvatar: "/placeholder.svg?height=100&width=100",
-//         companyLogo: "/placeholder.svg?height=400&width=400",
-//         description: "Join our team as a data science intern to gain hands-on experience in machine learning...",
-//         postedDate: "2023-06-10",
-//         likes: 189,
-//         comments: 28,
-//         type: "internship",
-//       },
-//       {
-//         id: 3,
-//         title: "UX/UI Designer",
-//         company: "Creative Solutions",
-//         location: "Seattle, WA",
-//         postedBy: "Mike Johnson",
-//         postedByAvatar: "/placeholder.svg?height=100&width=100",
-//         companyLogo: "/placeholder.svg?height=400&width=400",
-//         description: "We're looking for a creative UX/UI designer to help shape the future of our products...",
-//         postedDate: "2023-06-05",
-//         likes: 312,
-//         comments: 52,
-//         type: "job",
-//       },
-//     ]
-//     setJobs(dummyJobs)
-//   }, [])
+  useEffect(() => {
+    getPostData();
+  }, [])
 
   const filteredJobs = jobs.filter((job) =>
     (job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -104,131 +56,137 @@ export default function SearchJob() {
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
   }
 
+  const handleShare = () => {
+    const url = "https://aluminiportal.vercel.app/jobposts"
+    navigator.clipboard.writeText(url).then(() => {
+      alert("URL copied to clipboard!")
+    }).catch(err => {
+      console.error('Failed to copy: ', err)
+    })
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-    <Navbar2 />
-    <div className="container mx-auto p-4 max-w-6xl">
-   
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={titleVariants}
-        className="mb-8 text-center"
-      >
-        <h1 className="text-4xl font-bold mb-6">Find Your Dream</h1>
+      <Navbar2 />
+      <div className="container mx-auto p-4 max-w-6xl">
         <motion.div
-          variants={typeVariants}
-          className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+          initial="hidden"
+          animate="visible"
+          variants={titleVariants}
+          className="mb-8 text-center"
         >
-          {jobType === "internship" ? "Internship" : "Job"}
-        </motion.div>
-      </motion.div>
-      <div className="max-w-2xl mx-auto space-y-4 mb-8">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Search for jobs, companies, or locations..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-lg"
-          />
-        </div>
-        <RadioGroup
-          defaultValue="all"
-          name="jobType"
-          className="flex justify-center space-x-4"
-          onValueChange={setJobType}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="all" id="all" />
-            <Label htmlFor="all">All</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="job" id="job" />
-            <Label htmlFor="job">Jobs</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="internship" id="internship" />
-            <Label htmlFor="internship">Internships</Label>
-          </div>
-        </RadioGroup>
-      </div>
-      <AnimatePresence>
-        {filteredJobs.slice().reverse().map((job) => (
+          <h1 className="text-4xl font-bold mb-6">Find Your Dream</h1>
           <motion.div
-            key={job.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            variants={typeVariants}
+            className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
           >
-            <Card className="mb-8 overflow-hidden transition-shadow duration-300 hover:shadow-xl">
-              <CardContent className="p-0">
-                <div className="flex flex-col lg:flex-row">
-                  <div className="lg:w-1/3">
-                    <img
-                      src={job.thumbnail}
-                      alt={`${job.company} banner`}
-                      className="w-full h-48 lg:h-full object-cover"
-                    />
-                  </div>
-                  <div className="lg:w-2/3 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3 ">
-                      <Link href={`/profile/${job.postedBy}`}>
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src={job.postedByAvatar} alt={job.postedBy} />
-                          <AvatarFallback>{job?.postedByName[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className="text-blue-700">
-                          <p className="font-semibold">{job?.postedByName}</p>
-                          <p className="text-sm text-gray-500">{job.company}</p>
-                        </div>
-                        </Link>
-                      </div>
-                      <Button variant="ghost" size="icon">
-                        <Bookmark className="w-5 h-5" />
-                      </Button>
-                    </div>
-                    <h2 className="text-2xl font-bold mb-2">{job.title}</h2>
-                    <div className="flex items-center text-gray-500 text-sm mb-4">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {job.location}
-                      <span className="mx-2">•</span>
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(job.postedDate).toLocaleDateString()}
-                    </div>
-                    <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <Button variant="ghost" size="sm" className="text-gray-500">
-                          <MessageCircle className="w-5 h-5 mr-1" />
-                          {job.comments}
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-gray-500">
-                          <Share2 className="w-5 h-5 mr-1" />
-                          Share
-                        </Button>
-                      </div>
-                      <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-                        Apply Now
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {jobType === "internship" ? "Internship" : "Job"}
           </motion.div>
-        ))}
-      </AnimatePresence>
-    </div>
+        </motion.div>
+        <div className="max-w-2xl mx-auto space-y-4 mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search for jobs, companies, or locations..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-lg"
+            />
+          </div>
+          <RadioGroup
+            defaultValue="all"
+            name="jobType"
+            className="flex justify-center space-x-4"
+            onValueChange={setJobType}
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="all" id="all" />
+              <Label htmlFor="all">All</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="job" id="job" />
+              <Label htmlFor="job">Jobs</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="internship" id="internship" />
+              <Label htmlFor="internship">Internships</Label>
+            </div>
+          </RadioGroup>
+        </div>
+        <AnimatePresence>
+          {filteredJobs.slice().reverse().map((job) => (
+            <motion.div
+              key={job.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="mb-8 overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                <CardContent className="p-0">
+                  <div className="flex flex-col lg:flex-row">
+                    {job.thumbnail && (
+                      <div className="lg:w-1/3">
+                        <img
+                          src={job.thumbnail}
+                          alt={`${job.company} banner`}
+                          className="w-full h-48 lg:h-full object-cover"
+                          onError={(e) => e.target.style.display = 'none'}
+                        />
+                      </div>
+                    )}
+                    <div className={job.thumbnail ? "lg:w-2/3 p-6" : "w-full p-6"}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-3 ">
+                          <Link href={`/profile/${job.postedBy}`}>
+                            <Avatar className="w-10 h-10">
+                              <AvatarImage src={job.postedByAvatar} alt={job.postedBy} />
+                              <AvatarFallback>{job?.postedByName[0]}</AvatarFallback>
+                            </Avatar>
+                            <div className="text-blue-700">
+                              <p className="font-semibold">{job?.postedByName}</p>
+                              <p className="text-sm text-gray-500">{job.company}</p>
+                            </div>
+                          </Link>
+                        </div>
+                        <Button variant="ghost" size="icon">
+                          <Bookmark className="w-5 h-5" />
+                        </Button>
+                      </div>
+                      <h2 className="text-2xl font-bold mb-2">{job.title}</h2>
+                      <div className="flex items-center text-gray-500 text-sm mb-4">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        {job.location}
+                        <span className="mx-2">•</span>
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {new Date(job.postedDate).toLocaleDateString()}
+                      </div>
+                      <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <Button variant="ghost" size="sm" className="text-gray-500">
+                            <MessageCircle className="w-5 h-5 mr-1" />
+                            {job.comments}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-gray-500" onClick={handleShare}>
+                            <Share2 className="w-5 h-5 mr-1" />
+                            Share
+                          </Button>
+                        </div>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
-
-
-
 
 
 // 'use client'
