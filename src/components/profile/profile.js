@@ -276,7 +276,7 @@ export default function ProfileDisplay({ user }) {
                   </div>
                 ) : (
                   <div className="flex flex-wrap gap-1 sm:gap-2">
-                        <h3 className="text-sm">No Experince added to Show</h3>
+                        <h3 className="text-sm">No Experience added to Show</h3>
                   </div>
                 )
               }
