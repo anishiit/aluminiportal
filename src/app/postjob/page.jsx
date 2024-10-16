@@ -3,10 +3,10 @@ import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import Navbar2 from '@/components/header/Navbar2';
+import {postUserPostUrl} from "@/urls/urls.js"
+import { Button } from '@/components/ui/button';
 
-export default function ContactPageOne() {
-
-    const url = "https://alumini-portal-backend.onrender.com/post/postjob";
+export default function ContactPageOne() { 
   
     const [input , setInput] = useState({
         title:"",
@@ -18,10 +18,12 @@ export default function ContactPageOne() {
     const [thumbnail ,setThumbnail] = useState(undefined);
     const [msg,setmsg] = useState("");
     const [err,seterr] = useState("");
+    const [isLoading , setLoading ] = useState(false);
 
 
 
     async function handleSubmit(e){
+        setLoading(true)
         e.preventDefault();
         seterr("")
         setmsg("Posting..")
@@ -46,7 +48,7 @@ export default function ContactPageOne() {
         
         console.log(form.get("thumbnail"));
         try {
-            await axios.post(url,form)
+            await axios.post(postUserPostUrl,form)
             .then((res) => {
                 console.log(res.data);
                 setInput({
@@ -57,18 +59,21 @@ export default function ContactPageOne() {
                 })
                 setThumbnail({});
                 setmsg(String(res.data.msg).toUpperCase());
-                setInput({})
+                setInput({ title:"", description:"", category:"", url:"" })
                 setThumbnail({})
+                setLoading(false)
             })
             .catch((err) => {
                 console.log(err);
                 setmsg("")
                 seterr(err.response.data.message);
+                setLoading(false);
             })
         } catch (error) {
             console.log(error)
             setmsg("")
             seterr(error.message);
+            setLoading(false);
         }
     }
 
@@ -106,7 +111,7 @@ export default function ContactPageOne() {
                         className="text-sm font-medium leading-none text-gray-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         htmlFor="title"
                       >
-                        Title
+                        Title*
                       </label>
                       <input
                         className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
@@ -125,7 +130,7 @@ export default function ContactPageOne() {
                       className="text-sm font-medium leading-none text-gray-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       htmlFor="description"
                     >
-                      Description
+                      Description*
                     </label>
                     <textarea
                       className="flex h-20 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700  dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
@@ -161,7 +166,7 @@ export default function ContactPageOne() {
                       className="text-sm font-medium leading-none text-gray-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       htmlFor="thumbnail"
                     >
-                      Category
+                      Category*
                     </label>
                     <select
                       className="flex text-black h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
@@ -171,9 +176,8 @@ export default function ContactPageOne() {
                        }}
                     >
                         <option className='text-black dark:text-gray-300' value="">Select Category</option>
-                        <option className='text-black dark:text-gray-300' value="SDE1">SDE1</option>
-                        <option className='text-black dark:text-gray-300' value="SDE2">SDE2</option>
-                        <option className='text-black dark:text-gray-300' value="SDE3">SDE3</option>
+                        <option className='text-black dark:text-gray-300' value="SDE1">Internship</option>
+                        <option className='text-black dark:text-gray-300' value="SDE2">Job</option>
                     </select>
                   </div>
                   <div className="grid w-full  items-center gap-1.5">
@@ -194,14 +198,15 @@ export default function ContactPageOne() {
                         }}
                       />
                   </div>
-                  <p className='text-red-500 text-center text-lg font-semibold'>{err}</p>
-                  <button
+                  <p className='text-red-600 text-center text-base font-semibold'>{err}</p>
+                  <Button
+                    disabled={isLoading}
                     type="submit"
                     onClick={handleSubmit}
                     className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                   >
-                    Post
-                  </button>
+                    {isLoading === false ? (<>Post</>) : (<>Posting...</>)}
+                  </Button>
                 </form>
 
               </div>
