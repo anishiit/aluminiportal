@@ -357,7 +357,7 @@ export default function WhatsAppClone() {
     <Navbar2/>
     <div className="flex w-full h-[91%] bg-background fixed bottom-0 overflow-x-clip ">
       <div className="w-full md:w-96 flex flex-col border-r">
-        <div className="flex justify-between items-center p-4 bg-primary text-primary-foreground">
+        <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-primary-foreground">
           <h1 className="text-xl font-bold">Chat</h1>
           {loading === true ? (<></>):(<p>Messages are Loading...</p>)}
           {/* Add group button with dialog  */}
