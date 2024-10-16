@@ -117,7 +117,7 @@ const handleSendMessage = async (e) => {
 
 return (
   <div className="flex flex-col h-full pt-16 sm:pt-0">
-    <div className="flex items-center space-x-4 p-4 bg-primary text-primary-foreground">
+    <div className="flex items-center space-x-4 px-4 py-[14px] bg-gradient-to-r from-blue-600 to-indigo-600 text-primary-foreground">
       <Button variant="ghost" size="icon" onClick={onBack}>
         <ArrowLeft className="h-6 w-6" />
       </Button>
