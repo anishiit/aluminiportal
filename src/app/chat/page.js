@@ -429,7 +429,7 @@ export default function WhatsAppClone() {
           </TabsList>
           {/* tabcontent for chats  */}
           <TabsContent value="chats" className="flex-grow">
-            <ScrollArea className="h-[calc(100vh-200px)]">
+            <ScrollArea className="h-[calc(92vh-200px)]">
               {filteredChats.map(chat => (
                 <div key={chat._id} className={`flex items-center space-x-4 p-4 ${(selectedChat !== null && selectedChat._id === chat._id) ? "bg-gray-200" : ""}  hover:bg-gray-100 cursor-pointer`} onClick={() => handleChatClick(chat)}>
                   <Avatar>
