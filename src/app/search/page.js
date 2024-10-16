@@ -44,12 +44,25 @@ export default function UserConnectionPage() {
       const res = await axios.post(getAllCollegeUsersUrl, { collegeName: collegeName })
       console.log(res.data)
       const allUsers = res.data.users
-      const formattedUsers = allUsers.map((user) => ({
-        ...user,
-        isConnected: user.connectedUsers?.includes(String(currUser._id)) || false,
-        batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
-        branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
-      }))
+      const formattedUsers = allUsers.map((user) => {
+        if(user._id === currUser._id){
+          return ({
+            ...user,
+            isConnected: user.connectedUsers?.includes(String(currUser._id)) || false,
+            batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
+            branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
+            isCurrentUser:true
+          })
+        }else{
+          return ({
+            ...user,
+            isConnected: user.connectedUsers?.includes(String(currUser._id)) || false,
+            batch: user.batch || "2015", // Assuming batch information is available, otherwise defaulting to "2015"
+            branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
+            isCurrentUser:false
+          })
+        }
+      })
       setUsers(formattedUsers)
       setLoading(false)
       setNoAlumni(false)
@@ -193,7 +206,7 @@ export default function UserConnectionPage() {
                                 <AvatarFallback>{user.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
                               </Avatar>
                             </div>
-                            <h3 className="text-xl font-semibold text-center mb-2">{user.name}</h3>
+                            <h3 className="text-xl font-semibold text-center mb-2">{user.name}{user.isCurrentUser === true ? (<p className="text-sm text-muted-foreground" >(You)</p>):(<></>)}</h3>
                             <p className="text-sm text-muted-foreground text-center mb-4">{user.jobTitle || "Position not specified"}</p>
                             <div className="space-y-2 text-sm flex-grow">
                               <div className="flex items-center justify-center">
@@ -211,7 +224,7 @@ export default function UserConnectionPage() {
                                 View Profile
                               </Button>
                               <Button
-                                disabled={user.isConnected}
+                                disabled={user.isConnected || user.isCurrentUser}
                                 variant={user.isConnected ? "secondary" : "default"}
                                 size="sm"
                                 onClick={() => handleConnect(user._id)}
