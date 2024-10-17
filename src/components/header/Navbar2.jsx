@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Bell, Calendar, LayoutDashboard, LogOut, Mail, Menu, User, Users, X, GraduationCap, Briefcase, Search, ChevronDown } from "lucide-react"
+import { Bell, Calendar, LayoutDashboard,SmilePlus, LogOut, Mail, Menu, User, Users, X, GraduationCap, Briefcase, Search, ChevronDown } from "lucide-react"
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
@@ -47,7 +47,7 @@ function Navbar2() {
   const navItems = [
     { name: "Messages", href: "/chat" , external: true, icon: <Mail className="h-4 w-4 mr-2" /> },
     { name: "Events", href: "/event", external: true, icon: <Calendar className="h-4 w-4 mr-2" /> },
-    { name: "Get Involved", href: "/getInvolved", external: true, icon: <Bell className="h-4 w-4 mr-2" /> },
+    { name: "Memories", href: "/memories", external: true, icon: <SmilePlus className="h-4 w-4 mr-2" /> },
     { name: "Reconnect", href: "/search", external: true, icon: <Users className="h-4 w-4 mr-2" /> },
     { name: "Post Job", href: "/postjob", external: true, icon: <Briefcase className="h-4 w-4 mr-2" /> },
     { name: "Search Job", href: "/jobposts", external: true, icon: <Search className="h-4 w-4 mr-2" /> },
@@ -132,10 +132,16 @@ function Navbar2() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={handleLogout} className="text-gray-600 hover:text-blue-600">
-            <LogOut className="h-5 w-5" />
-            <span className="sr-only">Log out</span>
-          </Button>
+        <Button
+  variant="ghost"
+  size="icon"
+  onClick={handleLogout}
+  className="text-gray-600 hover:text-blue-600 hidden sm:inline-flex"
+>
+  <LogOut className="h-5 w-5" />
+  <span className="sr-only">Log out</span>
+</Button>
+
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
