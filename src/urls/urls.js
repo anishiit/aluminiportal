@@ -36,3 +36,14 @@ export const getUserChatsUrl = "https://alumni-portal-chatservice-backend.onrend
 
 export const getChatByIdUrl = "https://alumni-portal-chatservice-backend.onrender.com/chat/getchatbyid"
 
+// memories urls =>
+
+export const getAllMemoriesUrl = "https://alumni-portal-backend.vercel.app/memory/" // get
+
+export const createMemoryUrl = "https://alumni-portal-backend.vercel.app/memory/" // post
+
+export const getMemoryByIdUrl = "https://alumni-portal-backend.vercel.app/memory/getmemorybyid"  // id 
+
+export const  addLikeOnMemory = "https://alumni-portal-backend.vercel.app/memory/like"
+
+export const  addCommentOnMemory = "https://alumni-portal-backend.vercel.app/memory/comment"
