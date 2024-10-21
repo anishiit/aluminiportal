@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Search, Heart, MessageCircle, Send, Image as ImageIcon } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Navbar2 from "@/components/header/Navbar2"
+import axios from "axios"
+import { getAllMemoriesUrl ,getMemoryByIdUrl , createMemoryUrl } from "@/urls/urls.js"
 
 export default function AlumniMemories() {
   const [memories, setMemories] = useState([])
@@ -17,11 +19,21 @@ export default function AlumniMemories() {
   const [newMemory, setNewMemory] = useState("")
   const [newImage, setNewImage] = useState(null)
   const fileInputRef = useRef(null)
-  const [currentUser, setCurrentUser] = useState({
-    id: 'current-user-id',
-    name: 'Current User',
-    avatar: '/placeholder.svg?height=40&width=40'
-  })
+  const [currentUser, setCurrentUser] = useState({})
+
+   const getUser =()=>{
+    if (typeof window !== 'undefined') {
+      const userData = JSON.parse(localStorage.getItem("user-threads"))
+   console.log(userData._id)
+      setCurrentUser(userData)
+      
+    }
+   }
+   useEffect(() => {
+  
+    getUser()
+  }, [])
+
 
   // Simulated API call to get memories
   async function getMemories() {
@@ -51,17 +63,49 @@ export default function AlumniMemories() {
         date: "2023-06-14"
       },
     ]
-    setMemories(mockMemories)
+   
   }
 
+  const getAllMemories = async()=>{
+try {
+  const response = await axios.get(getAllMemoriesUrl)
+  console.log(response.data)
+  setMemories(response.data)
+
+} catch (error) {
+  console.log(error);
+}
+  }
   useEffect(() => {
-    getMemories()
+    getAllMemories()
   }, [])
 
   const filteredMemories = memories.filter((memory) =>
     memory.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
     memory.author.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+const postNewMemory = async()=>{
+try {
+  const formData = new FormData();
+    
+  // Append memory details to formData
+  formData.append('content', newMemory);  // Assuming newMemory is an object
+  formData.append('postedBy', currentUser._id);  // Assuming currentUser is a simple value (string)
+  
+  // Append the image file
+  formData.append('image', newImage);  
+  const response =await axios.post(createMemoryUrl ,formData)
+  console.log(response.data)
+} catch (error) {
+  console.log(error);
+  
+}
+}
+useEffect(() => {
+  getAllMemories()
+ 
+}, [])
 
   const handleNewMemory = () => {
     if (newMemory.trim() || newImage) {
@@ -84,11 +128,11 @@ export default function AlumniMemories() {
   const handleLike = (memoryId) => {
     setMemories(memories.map(memory => {
       if (memory.id === memoryId) {
-        const userLikedIndex = memory.likes.indexOf(currentUser.id)
+        const userLikedIndex = memory.likes.indexOf(currentUser._id)
         if (userLikedIndex > -1) {
           memory.likes.splice(userLikedIndex, 1)
         } else {
-          memory.likes.push(currentUser.id)
+          memory.likes.push(currentUser._id)
         }
       }
       return memory
@@ -163,7 +207,7 @@ export default function AlumniMemories() {
                 <ImageIcon className="h-4 w-4" />
               </Button>
               {newImage && <img src={newImage} alt="Preview" className="h-10 w-10 object-cover rounded" />}
-              <Button onClick={handleNewMemory}>
+              <Button onClick={postNewMemory}>
                 <Send className="w-4 h-4 mr-2" />
                 Share Memory
               </Button>
@@ -183,9 +227,9 @@ export default function AlumniMemories() {
         </div>
 
         <AnimatePresence>
-          {filteredMemories.map((memory) => (
+          {filteredMemories?.map((memory) => (
             <motion.div
-              key={memory.id}
+              key={memory._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -195,31 +239,31 @@ export default function AlumniMemories() {
                 <CardContent className="p-4">
                   <div className="flex items-center mb-4">
                     <Avatar className="w-10 h-10 mr-3">
-                      <AvatarImage src={memory.authorAvatar} alt={memory.author} />
-                      <AvatarFallback>{memory.author[0]}</AvatarFallback>
+                      <AvatarImage src={memory?.authorAvatar} alt={memory?.author.name} />
+                      <AvatarFallback>{memory.author.name[0]}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-semibold">{memory.author}</p>
-                      <p className="text-sm text-gray-500">{memory.date}</p>
+                      <p className="font-semibold">{memory?.author.name}</p>
+                      <p className="text-sm text-gray-500">{memory?.date}</p>
                     </div>
                   </div>
                   {memory.image && (
                     <img 
-                      src={memory.image} 
+                      src={memory?.image} 
                       alt="Memory" 
                       className="w-full h-64 object-cover rounded-lg mb-4" 
                     />
                   )}
-                  <p className="text-gray-700 mb-4">{formatContent(memory.content)}</p>
+                  <p className="text-gray-700 mb-4">{formatContent(memory?.content)}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className={`text-gray-500 ${memory.likes.includes(currentUser.id) ? 'text-red-500' : ''}`}
+                        className={`text-gray-500 ${memory.likes.includes(currentUser._id) ? 'text-red-500' : ''}`}
                         onClick={() => handleLike(memory.id)}
                       >
-                        <Heart className={`w-5 h-5 mr-1 ${memory.likes.includes(currentUser.id) ? 'fill-current' : ''}`} />
+                        <Heart className={`w-5 h-5 mr-1 ${memory.likes.includes(currentUser._id) ? 'fill-current' : ''}`} />
                         {memory.likes.length}
                       </Button>
                       <Dialog>
