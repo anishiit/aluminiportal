@@ -44,6 +44,6 @@ export const createMemoryUrl = "https://alumni-portal-backend.vercel.app/memory/
 
 export const getMemoryByIdUrl = "https://alumni-portal-backend.vercel.app/memory/getmemorybyid"  // id 
 
-export const  addLikeOnMemory = "https://alumni-portal-backend.vercel.app/memory/like"
+export const  addLikeOnMemoryUrl = "https://alumni-portal-backend.vercel.app/memory/like"
 
-export const  addCommentOnMemory = "https://alumni-portal-backend.vercel.app/memory/comment"
+export const  addCommentOnMemoryUrl = "https://alumni-portal-backend.vercel.app/memory/comment"

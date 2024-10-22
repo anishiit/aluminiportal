@@ -11,7 +11,7 @@ import { Search, Heart, MessageCircle, Send, Image as ImageIcon } from "lucide-r
 import { motion, AnimatePresence } from "framer-motion"
 import Navbar2 from "@/components/header/Navbar2"
 import axios from "axios"
-import { getAllMemoriesUrl ,getMemoryByIdUrl , createMemoryUrl } from "@/urls/urls.js"
+import { getAllMemoriesUrl ,getMemoryByIdUrl , createMemoryUrl, addLikeOnMemoryUrl, addCommentOnMemoryUrl } from "@/urls/urls.js"
 
 export default function AlumniMemories() {
   const [memories, setMemories] = useState([])
@@ -51,8 +51,8 @@ export default function AlumniMemories() {
   }, [])
 
   const filteredMemories = memories.filter((memory) =>
-    memory.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    memory.author.toLowerCase().includes(searchTerm.toLowerCase())
+    memory?.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    memory?.author?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const postNewMemory = async()=>{
@@ -76,12 +76,20 @@ export default function AlumniMemories() {
 
   const handleLike = (memoryId) => {
     setMemories(memories.map(memory => {
-      if (memory.id === memoryId) {
+      if (memory._id === memoryId) {
         const userLikedIndex = memory.likes.indexOf(currentUser._id)
         if (userLikedIndex > -1) {
           memory.likes.splice(userLikedIndex, 1)
         } else {
           memory.likes.push(currentUser._id)
+        }
+        // api req for adding a like on a memory
+        try {
+          axios.post(addLikeOnMemoryUrl,{
+            memoryId: memoryId, userId:currentUser._id
+          }).then()
+        } catch (error) {
+          console.log(error)
         }
       }
       return memory
@@ -89,14 +97,25 @@ export default function AlumniMemories() {
   }
 
   const handleComment = (memoryId, comment) => {
-    setMemories(memories.map(memory => {
-      if (memory.id === memoryId) {
+    setMemories(memories.map( memory => {
+      if (memory._id === memoryId) {
         memory.comments.push({
-          id: memory.comments.length + 1,
-          author: currentUser.name,
+          _id: memory.comments.length + 1,
+          author: currentUser._id,
+          authorname:currentUser.name,
           content: comment,
           avatar: currentUser.avatar
         })
+        // api req to push the comment
+        try {
+          axios.post(addCommentOnMemoryUrl, {
+            memoryId:memoryId, postedBy:currentUser._id, content:comment
+          }).then((res) => {console.log(res.data.message)})
+          .catch((err) => {console.log(err)})
+        } catch (error) {
+          console.log(error)
+        }
+
       }
       return memory
     }))
@@ -211,7 +230,7 @@ export default function AlumniMemories() {
                         variant="ghost"
                         size="sm"
                         className={`text-gray-500 ${memory.likes.includes(currentUser._id) ? 'text-red-500' : ''}`}
-                        onClick={() => handleLike(memory.id)}
+                        onClick={() => handleLike(memory._id)}
                       >
                         <Heart className={`w-5 h-5 mr-1 ${memory.likes.includes(currentUser._id) ? 'fill-current' : ''}`} />
                         {memory.likes.length}
@@ -229,10 +248,10 @@ export default function AlumniMemories() {
                               <div key={comment.id} className="flex items-start space-x-2 mb-4">
                                 <Avatar className="w-8 h-8">
                                   <AvatarImage src={comment.avatar} alt={comment.author} />
-                                  <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                                  <AvatarFallback>{String(comment?.authorname[0]).toUpperCase()}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <p className="font-semibold">{comment.author}</p>
+                                  <p className="font-semibold">{comment.authorname}</p>
                                   <p className="text-sm text-gray-700">{comment.content}</p>
                                 </div>
                               </div>
@@ -243,7 +262,7 @@ export default function AlumniMemories() {
                               placeholder="Add a comment..."
                               onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
-                                  handleComment(memory.id, e.target.value)
+                                  handleComment(memory._id, e.target.value)
                                   e.target.value = ''
                                 }
                               }}
@@ -251,7 +270,7 @@ export default function AlumniMemories() {
                             />
                             <Button size="sm" onClick={() => {
                               const input = document.querySelector('input[placeholder="Add a comment..."]')
-                              handleComment(memory.id, input.value)
+                              handleComment(memory._id, input.value)
                               input.value = ''
                             }}>
                               Post
