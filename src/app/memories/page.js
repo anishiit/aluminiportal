@@ -127,7 +127,7 @@ useEffect(() => {
 
   const handleLike = (memoryId) => {
     setMemories(memories.map(memory => {
-      if (memory.id === memoryId) {
+      if (memory._id === memoryId) {
         const userLikedIndex = memory.likes.indexOf(currentUser._id)
         if (userLikedIndex > -1) {
           memory.likes.splice(userLikedIndex, 1)
@@ -141,9 +141,9 @@ useEffect(() => {
 
   const handleComment = (memoryId, comment) => {
     setMemories(memories.map(memory => {
-      if (memory.id === memoryId) {
+      if (memory._id === memoryId) {
         memory.comments.push({
-          id: memory.comments.length + 1,
+          _id: memory.comments.length + 1,
           author: currentUser.name,
           content: comment,
           avatar: currentUser.avatar
@@ -227,7 +227,7 @@ useEffect(() => {
         </div>
 
         <AnimatePresence>
-          {filteredMemories?.map((memory) => (
+          {filteredMemories?.slice().reverse().map((memory) => (
             <motion.div
               key={memory._id}
               initial={{ opacity: 0, y: 20 }}
@@ -261,7 +261,7 @@ useEffect(() => {
                         variant="ghost"
                         size="sm"
                         className={`text-gray-500 ${memory.likes.includes(currentUser._id) ? 'text-red-500' : ''}`}
-                        onClick={() => handleLike(memory.id)}
+                        onClick={() => handleLike(memory._id)}
                       >
                         <Heart className={`w-5 h-5 mr-1 ${memory.likes.includes(currentUser._id) ? 'fill-current' : ''}`} />
                         {memory.likes.length}
@@ -276,7 +276,7 @@ useEffect(() => {
                         <DialogContent className="sm:max-w-[425px]">
                           <div className="max-h-[50vh] overflow-y-auto">
                             {memory.comments.map((comment) => (
-                              <div key={comment.id} className="flex items-start space-x-2 mb-4">
+                              <div key={comment._id} className="flex items-start space-x-2 mb-4">
                                 <Avatar className="w-8 h-8">
                                   <AvatarImage src={comment.avatar} alt={comment.author} />
                                   <AvatarFallback>{comment.author[0]}</AvatarFallback>
@@ -293,7 +293,7 @@ useEffect(() => {
                               placeholder="Add a comment..."
                               onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
-                                  handleComment(memory.id, e.target.value)
+                                  handleComment(memory._id, e.target.value)
                                   e.target.value = ''
                                 }
                               }}
@@ -301,7 +301,7 @@ useEffect(() => {
                             />
                             <Button size="sm" onClick={() => {
                               const input = document.querySelector('input[placeholder="Add a comment..."]')
-                              handleComment(memory.id, input.value)
+                              handleComment(memory._id, input.value)
                               input.value = ''
                             }}>
                               Post
