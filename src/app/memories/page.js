@@ -51,8 +51,8 @@ export default function AlumniMemories() {
   }, [])
 
   const filteredMemories = memories.filter((memory) =>
-    memory?.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    memory?.author?.toLowerCase().includes(searchTerm.toLowerCase())
+    String(memory?.content)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    String(memory?.author?.name)?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const postNewMemory = async()=>{
