@@ -11,119 +11,68 @@ import { Search, Heart, MessageCircle, Send, Image as ImageIcon } from "lucide-r
 import { motion, AnimatePresence } from "framer-motion"
 import Navbar2 from "@/components/header/Navbar2"
 import axios from "axios"
-import { getAllMemoriesUrl ,getMemoryByIdUrl , createMemoryUrl } from "@/urls/urls.js"
+import { getAllMemoriesUrl ,getMemoryByIdUrl , createMemoryUrl, addLikeOnMemoryUrl, addCommentOnMemoryUrl } from "@/urls/urls.js"
 
 export default function AlumniMemories() {
   const [memories, setMemories] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [newMemory, setNewMemory] = useState("")
   const [newImage, setNewImage] = useState(null)
+  const [image, setImage] = useState(null);
   const fileInputRef = useRef(null)
   const [currentUser, setCurrentUser] = useState({})
 
-   const getUser =()=>{
+  const getUser =()=>{
     if (typeof window !== 'undefined') {
       const userData = JSON.parse(localStorage.getItem("user-threads"))
-   console.log(userData._id)
-      setCurrentUser(userData)
-      
+      console.log(userData._id)
+      setCurrentUser(userData) 
     }
-   }
-   useEffect(() => {
-  
+  }
+
+  useEffect(() => {
     getUser()
   }, [])
 
 
-  // Simulated API call to get memories
-  async function getMemories() {
-    // Replace this with your actual API call
-    const mockMemories = [
-      {
-        id: 1,
-        content: "Remember that amazing graduation ceremony? Best day ever! @JohnDoe @JaneSmith #Graduation #AlumniLife",
-        author: "Alice Johnson",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        image: "/image/event1.jpeg",
-        likes: ['user1', 'user2'],
-        comments: [
-          { id: 1, author: 'John Doe', content: 'It was indeed amazing!', avatar: '/placeholder.svg?height=32&width=32' },
-          { id: 2, author: 'Jane Smith', content: 'I miss those days!', avatar: '/placeholder.svg?height=32&width=32' }
-        ],
-        date: "2023-06-15"
-      },
-      {
-        id: 2,
-        content: "That time we pulled an all-nighter for the final project... never again! But we made it! @BobWilliams #AlumniLife #FinalProject",
-        author: "Bob Williams",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        image: null,
-        likes: ['user3'],
-        comments: [],
-        date: "2023-06-14"
-      },
-    ]
-   
-  }
-
   const getAllMemories = async()=>{
-try {
-  const response = await axios.get(getAllMemoriesUrl)
-  console.log(response.data)
-  setMemories(response.data)
+    try {
+      const response = await axios.get(getAllMemoriesUrl)
+      console.log(response.data)
+      setMemories(response.data)
 
-} catch (error) {
-  console.log(error);
-}
+    } catch (error) {
+      console.log(error);
+    }
   }
+      
   useEffect(() => {
     getAllMemories()
   }, [])
 
   const filteredMemories = memories.filter((memory) =>
-    memory.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    memory.author.toLowerCase().includes(searchTerm.toLowerCase())
+    String(memory?.content)?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    String(memory?.author?.name)?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-const postNewMemory = async()=>{
-try {
-  const formData = new FormData();
-    
-  // Append memory details to formData
-  formData.append('content', newMemory);  // Assuming newMemory is an object
-  formData.append('postedBy', currentUser._id);  // Assuming currentUser is a simple value (string)
-  
-  // Append the image file
-  formData.append('image', newImage);  
-  const response =await axios.post(createMemoryUrl ,formData)
-  console.log(response.data)
-} catch (error) {
-  console.log(error);
-  
-}
-}
-useEffect(() => {
-  getAllMemories()
- 
-}, [])
-
-  const handleNewMemory = () => {
-    if (newMemory.trim() || newImage) {
-      const newMemoryObject = {
-        id: memories.length + 1,
-        content: newMemory,
-        author: currentUser.name,
-        authorAvatar: currentUser.avatar,
-        image: newImage,
-        likes: [],
-        comments: [],
-        date: new Date().toISOString().split('T')[0]
-      }
-      setMemories([newMemoryObject, ...memories])
-      setNewMemory("")
-      setNewImage(null)
+  const postNewMemory = async()=>{
+    try {
+      const formData = new FormData();
+        
+      // Append memory details to formData
+      formData.append('content', newMemory);  // Assuming newMemory is an object
+      formData.append('postedBy', currentUser._id);  // Assuming currentUser is a simple value (string)
+      
+      // Append the image file
+      formData.append('image', image);  
+      const response =await axios.post(createMemoryUrl ,formData)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error);
+      
     }
   }
+
 
   const handleLike = (memoryId) => {
     setMemories(memories.map(memory => {
@@ -134,20 +83,39 @@ useEffect(() => {
         } else {
           memory.likes.push(currentUser._id)
         }
+        // api req for adding a like on a memory
+        try {
+          axios.post(addLikeOnMemoryUrl,{
+            memoryId: memoryId, userId:currentUser._id
+          }).then()
+        } catch (error) {
+          console.log(error)
+        }
       }
       return memory
     }))
   }
 
   const handleComment = (memoryId, comment) => {
-    setMemories(memories.map(memory => {
+    setMemories(memories.map( memory => {
       if (memory._id === memoryId) {
         memory.comments.push({
           _id: memory.comments.length + 1,
-          author: currentUser.name,
+          author: currentUser._id,
+          authorname:currentUser.name,
           content: comment,
           avatar: currentUser.avatar
         })
+        // api req to push the comment
+        try {
+          axios.post(addCommentOnMemoryUrl, {
+            memoryId:memoryId, postedBy:currentUser._id, content:comment
+          }).then((res) => {console.log(res.data.message)})
+          .catch((err) => {console.log(err)})
+        } catch (error) {
+          console.log(error)
+        }
+
       }
       return memory
     }))
@@ -155,6 +123,7 @@ useEffect(() => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0]
+    setImage(file)
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -279,10 +248,10 @@ useEffect(() => {
                               <div key={comment._id} className="flex items-start space-x-2 mb-4">
                                 <Avatar className="w-8 h-8">
                                   <AvatarImage src={comment.avatar} alt={comment.author} />
-                                  <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                                  <AvatarFallback>{String(comment?.authorname[0]).toUpperCase()}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <p className="font-semibold">{comment.author}</p>
+                                  <p className="font-semibold">{comment.authorname}</p>
                                   <p className="text-sm text-gray-700">{comment.content}</p>
                                 </div>
                               </div>
