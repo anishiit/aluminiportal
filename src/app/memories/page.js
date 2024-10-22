@@ -18,64 +18,34 @@ export default function AlumniMemories() {
   const [searchTerm, setSearchTerm] = useState("")
   const [newMemory, setNewMemory] = useState("")
   const [newImage, setNewImage] = useState(null)
+  const [image, setImage] = useState(null);
   const fileInputRef = useRef(null)
   const [currentUser, setCurrentUser] = useState({})
 
-   const getUser =()=>{
+  const getUser =()=>{
     if (typeof window !== 'undefined') {
       const userData = JSON.parse(localStorage.getItem("user-threads"))
-   console.log(userData._id)
-      setCurrentUser(userData)
-      
+      console.log(userData._id)
+      setCurrentUser(userData) 
     }
-   }
-   useEffect(() => {
-  
+  }
+
+  useEffect(() => {
     getUser()
   }, [])
 
 
-  // Simulated API call to get memories
-  async function getMemories() {
-    // Replace this with your actual API call
-    const mockMemories = [
-      {
-        id: 1,
-        content: "Remember that amazing graduation ceremony? Best day ever! @JohnDoe @JaneSmith #Graduation #AlumniLife",
-        author: "Alice Johnson",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        image: "/image/event1.jpeg",
-        likes: ['user1', 'user2'],
-        comments: [
-          { id: 1, author: 'John Doe', content: 'It was indeed amazing!', avatar: '/placeholder.svg?height=32&width=32' },
-          { id: 2, author: 'Jane Smith', content: 'I miss those days!', avatar: '/placeholder.svg?height=32&width=32' }
-        ],
-        date: "2023-06-15"
-      },
-      {
-        id: 2,
-        content: "That time we pulled an all-nighter for the final project... never again! But we made it! @BobWilliams #AlumniLife #FinalProject",
-        author: "Bob Williams",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        image: null,
-        likes: ['user3'],
-        comments: [],
-        date: "2023-06-14"
-      },
-    ]
-   
-  }
-
   const getAllMemories = async()=>{
-try {
-  const response = await axios.get(getAllMemoriesUrl)
-  console.log(response.data)
-  setMemories(response.data)
+    try {
+      const response = await axios.get(getAllMemoriesUrl)
+      console.log(response.data)
+      setMemories(response.data)
 
-} catch (error) {
-  console.log(error);
-}
+    } catch (error) {
+      console.log(error);
+    }
   }
+      
   useEffect(() => {
     getAllMemories()
   }, [])
@@ -85,45 +55,24 @@ try {
     memory.author.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-const postNewMemory = async()=>{
-try {
-  const formData = new FormData();
-    
-  // Append memory details to formData
-  formData.append('content', newMemory);  // Assuming newMemory is an object
-  formData.append('postedBy', currentUser._id);  // Assuming currentUser is a simple value (string)
-  
-  // Append the image file
-  formData.append('image', newImage);  
-  const response =await axios.post(createMemoryUrl ,formData)
-  console.log(response.data)
-} catch (error) {
-  console.log(error);
-  
-}
-}
-useEffect(() => {
-  getAllMemories()
- 
-}, [])
-
-  const handleNewMemory = () => {
-    if (newMemory.trim() || newImage) {
-      const newMemoryObject = {
-        id: memories.length + 1,
-        content: newMemory,
-        author: currentUser.name,
-        authorAvatar: currentUser.avatar,
-        image: newImage,
-        likes: [],
-        comments: [],
-        date: new Date().toISOString().split('T')[0]
-      }
-      setMemories([newMemoryObject, ...memories])
-      setNewMemory("")
-      setNewImage(null)
+  const postNewMemory = async()=>{
+    try {
+      const formData = new FormData();
+        
+      // Append memory details to formData
+      formData.append('content', newMemory);  // Assuming newMemory is an object
+      formData.append('postedBy', currentUser._id);  // Assuming currentUser is a simple value (string)
+      
+      // Append the image file
+      formData.append('image', image);  
+      const response =await axios.post(createMemoryUrl ,formData)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error);
+      
     }
   }
+
 
   const handleLike = (memoryId) => {
     setMemories(memories.map(memory => {
@@ -155,6 +104,7 @@ useEffect(() => {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0]
+    setImage(file)
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
