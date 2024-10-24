@@ -15,7 +15,7 @@ import { createUserInvitationUrl, getUserInfoUrl } from '@/urls/urls';
 import { getAllCollegeUsersUrl, connectUsersUrl, createChatOfUsers } from "@/urls/urls.js"
 import { useRouter } from 'next/navigation'
 import Navbar2 from "../header/Navbar2"
-
+import ProfileLoading from '@/components/ProfileLoading'
 export default function ProfileDisplay({ user }) {
   const [activeTab, setActiveTab] = useState("about")
   
@@ -30,10 +30,11 @@ export default function ProfileDisplay({ user }) {
   const [usr, setUsr] = useState({});
   const [err, setErr] = useState("");
   const [iscurrent, setcurrent] = useState('');
-   
+  const [loading ,setLoading] = useState(false)
 
   async function getUser(){
     try {
+      setLoading(true);
       await axios.post(getUserInfoUrl,{userId:userId})
       .then((res) => {
         // console.log(res.data);
@@ -43,6 +44,7 @@ export default function ProfileDisplay({ user }) {
         console.log(err);
         setErr(err.response.data.msg);
       })
+      setLoading(false);
     } catch (error) {
       console.log(error)
     }
@@ -51,7 +53,7 @@ export default function ProfileDisplay({ user }) {
   async function getAllCollegeUsers({ collegeName }) {
     
     try {
-      
+      setLoading(true)
       if (typeof window !== "undefined") {
         user= JSON.parse(localStorage.getItem("user-threads"))
         setcurrent(user);
@@ -67,7 +69,7 @@ export default function ProfileDisplay({ user }) {
         branch: user.branch || "Computer Science", // Assuming branch information is available, otherwise defaulting
       }))
       setUsers(formattedUsers)
-    
+    setLoading(false)
      
     } catch (error) {
       console.error(error)
@@ -163,7 +165,7 @@ export default function ProfileDisplay({ user }) {
   return (
     <div>
     <Navbar2/>
-    <div className="container mx-auto py-4 px-4 sm:py-6 sm:px-6 lg:px-8">
+    {loading === true ?  (<ProfileLoading/>):( <div className="container mx-auto py-4 px-4 sm:py-6 sm:px-6 lg:px-8">
       <Card className="w-full max-w-4xl mx-auto overflow-hidden">
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 pt-20 pb-16 px-4 sm:pt-24 sm:pb-32 sm:px-6 lg:px-8">
           <div className="absolute -bottom-12 left-0 w-full flex justify-center sm:justify-start sm:left-6 lg:left-8">
@@ -320,7 +322,8 @@ export default function ProfileDisplay({ user }) {
           </Tabs>
         </CardContent>
       </Card>
-    </div>
+    </div>)}
+   
     </div>
   )
 }

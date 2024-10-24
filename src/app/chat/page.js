@@ -15,7 +15,7 @@ import { io } from 'socket.io-client'
 import dayjs from 'dayjs'
 import { getUserChatsUrl, getChatByIdUrl, chat_backend_url } from '@/urls/urls.js'
 import Navbar2 from '@/components/header/Navbar2'
-
+import ChatLoading from "@/components/ChatLoading"
 // Socket io connection => 
 
 // const ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL_CHAT}`
@@ -355,7 +355,7 @@ export default function WhatsAppClone() {
   return (
   <div className='relative' >
     <Navbar2/>
-    <div className="flex w-full h-[91%] bg-background fixed bottom-0 overflow-x-clip ">
+    {loading === false ? (<ChatLoading/>): (<div className="flex w-full h-[91%] bg-background fixed bottom-0 overflow-x-clip ">
       <div className="w-full md:w-96 flex flex-col border-r">
         <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-primary-foreground">
           <h1 className="text-xl font-bold">Chat</h1>
@@ -483,7 +483,8 @@ export default function WhatsAppClone() {
           <ChatView chat={selectedChat} onBack={handleBackClick} />
         </div>
       )}
-    </div>
+    </div>)}
+    
   </div>
   )
 }

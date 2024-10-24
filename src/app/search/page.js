@@ -15,7 +15,7 @@ import { batch } from '@/data/batch'
 import { branch } from '@/data/branch'
 import { getAllCollegeUsersUrl, connectUsersUrl, createChatOfUsers } from "@/urls/urls.js"
 import Navbar2 from "@/components/header/Navbar2"
-
+import AlumniLoading from '@/components/AlumniLoading'
 import { useRouter } from 'next/navigation'
 
 
@@ -118,8 +118,10 @@ export default function UserConnectionPage() {
 
   return (
     <div>
+
     <Navbar2 />
-    <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
+
+    {loading === true ? (<AlumniLoading />):(<div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-6xl mx-auto bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 shadow-xl">
         <CardHeader className="pb-4">
           <CardTitle className="text-3xl sm:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
@@ -258,7 +260,8 @@ export default function UserConnectionPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </div>)}
+    
     </div>
   )
 }

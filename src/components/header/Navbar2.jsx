@@ -44,13 +44,10 @@ function Navbar2() {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const navItems = [
+  const navItems = [ { name: "Reconnect", href: "/search", external: true, icon: <Users className="h-4 w-4 mr-2" /> }, { name: "Search Job", href: "/jobposts", external: true, icon: <Search className="h-4 w-4 mr-2" /> }, { name: "Post Job", href: "/postjob", external: true, icon: <Briefcase className="h-4 w-4 mr-2" /> },
     { name: "Messages", href: "/chat" , external: true, icon: <Mail className="h-4 w-4 mr-2" /> },
-    { name: "Events", href: "/event", external: true, icon: <Calendar className="h-4 w-4 mr-2" /> },
-    { name: "Memories", href: "/memories", external: true, icon: <SmilePlus className="h-4 w-4 mr-2" /> },
-    { name: "Reconnect", href: "/search", external: true, icon: <Users className="h-4 w-4 mr-2" /> },
-    { name: "Post Job", href: "/postjob", external: true, icon: <Briefcase className="h-4 w-4 mr-2" /> },
-    { name: "Search Job", href: "/jobposts", external: true, icon: <Search className="h-4 w-4 mr-2" /> },
+    
+    { name: "Memories", href: "/memories", external: true, icon: <SmilePlus className="h-4 w-4 mr-2" /> },{ name: "Events", href: "/event", external: true, icon: <Calendar className="h-4 w-4 mr-2" /> },
       { name: "Profile", href: `/profile/${user._id}`, external: true, icon: <User className="h-4 w-4 mr-2" /> },
   ]
 
