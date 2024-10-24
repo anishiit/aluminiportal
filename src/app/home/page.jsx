@@ -11,7 +11,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/s
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import Navbar2 from "@/components/header/Navbar2"
-
+import { useToast } from "@/hooks/use-toast"
 
 
 
@@ -22,6 +22,16 @@ export default function AlumniHome() {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
+
+  const { toast } = useToast()
+
+  const handleWelcomeClick = () => {
+    toast({
+      variant:"red",
+      title: "Welcome to the Alumni Portal!",
+      description: "We're glad you're here. Explore and connect with your fellow alumni.",
+    })
+  }
 //geting user info 
 const [userData, setUserData] = useState({ collegeName: '', name: '' });
 useEffect(()=>{
@@ -203,7 +213,15 @@ useEffect(()=>{
 
 function InvolvementCard({ icon, title, description }) {
   
-  
+  const { toast } = useToast()
+
+  const handleWelcomeClick = () => {
+    console.log("welcome click")
+    toast({
+      title: "Welcome to the Alumni Portal!",
+      description: "We're glad you're here. Explore and connect with your fellow alumni.",
+    })
+  }
   return (
     <Card className="flex flex-col items-center text-center p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
       <div className="mb-4 p-3 bg-blue-100 rounded-full">{icon}</div>
