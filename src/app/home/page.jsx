@@ -27,7 +27,7 @@ export default function AlumniHome() {
 
   const handleWelcomeClick = () => {
     toast({
-      variant:"red",
+      variant:"green",
       title: "Welcome to the Alumni Portal!",
       description: "We're glad you're here. Explore and connect with your fellow alumni.",
     })
@@ -218,6 +218,7 @@ function InvolvementCard({ icon, title, description }) {
   const handleWelcomeClick = () => {
     console.log("welcome click")
     toast({
+      variant: "green",
       title: "Welcome to the Alumni Portal!",
       description: "We're glad you're here. Explore and connect with your fellow alumni.",
     })
