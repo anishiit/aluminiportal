@@ -11,7 +11,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/s
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import Navbar2 from "@/components/header/Navbar2"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 
 
@@ -27,6 +27,7 @@ export default function AlumniHome() {
 
   const handleWelcomeClick = () => {
     toast({
+      variant:"green",
       title: "Welcome to the Alumni Portal!",
       description: "We're glad you're here. Explore and connect with your fellow alumni.",
     })
@@ -216,6 +217,7 @@ function InvolvementCard({ icon, title, description }) {
 
   const handleWelcomeClick = () => {
     toast({
+      variant: "green",
       title: "Welcome to the Alumni Portal!",
       description: "We're glad you're here. Explore and connect with your fellow alumni.",
     })
